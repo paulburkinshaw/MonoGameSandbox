@@ -1,4 +1,4 @@
-﻿# SpritesheetAnimation001
+﻿# Platformer001
 
 Spritesheet animation with walking, running, jumping, and attacking animations \
 Monogame classes used: ```Vector2```, ```Texture2D```, ```Keyboard```

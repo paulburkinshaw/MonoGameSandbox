@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
 
-namespace SpritesheetAnimation001.Sprites;
+namespace Platformer001.Sprites;
 
 public class Knight
 {

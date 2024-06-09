@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System;
 using Microsoft.Xna.Framework;
 
-namespace SpritesheetAnimation001
+namespace Platformer001
 {
     public class AnimationFrameConverter : JsonConverter<Frame>
     {

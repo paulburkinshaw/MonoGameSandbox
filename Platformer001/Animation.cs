@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace SpritesheetAnimation001
+namespace Platformer001
 {
     public class AnimationCompleteEventArgs : EventArgs
     {

@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
 
-namespace SpritesheetAnimation001;
+namespace Platformer001;
 
 public static class InputManager
 {

@@ -6,7 +6,7 @@ using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace SpritesheetAnimation001;
+namespace Platformer001;
 
 public class AnimationManager
 {

@@ -1,6 +1,6 @@
-using SpritesheetAnimation001.Sprites;
+using Platformer001.Sprites;
 
-namespace SpritesheetAnimation001;
+namespace Platformer001;
 
 public class GameManager
 {

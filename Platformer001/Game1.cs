@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 
 
-namespace SpritesheetAnimation001
+namespace Platformer001
 {
     public class Game1 : Game
     {
