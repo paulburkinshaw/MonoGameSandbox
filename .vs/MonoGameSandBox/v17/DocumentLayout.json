@@ -1,0 +1,105 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Git\\Monogame\\MonoGameSandBox\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{29FC5534-3C9D-430C-BCB3-2DBC2137A77F}|SpritesheetAnimation001\\SpritesheetAnimation001.csproj|c:\\git\\monogame\\monogamesandbox\\spritesheetanimation001\\sprites\\knight.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{29FC5534-3C9D-430C-BCB3-2DBC2137A77F}|SpritesheetAnimation001\\SpritesheetAnimation001.csproj|solutionrelative:spritesheetanimation001\\sprites\\knight.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{29FC5534-3C9D-430C-BCB3-2DBC2137A77F}|SpritesheetAnimation001\\SpritesheetAnimation001.csproj|C:\\Git\\Monogame\\MonoGameSandBox\\spritesheetanimation001\\inputmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{29FC5534-3C9D-430C-BCB3-2DBC2137A77F}|SpritesheetAnimation001\\SpritesheetAnimation001.csproj|solutionrelative:spritesheetanimation001\\inputmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{29FC5534-3C9D-430C-BCB3-2DBC2137A77F}|SpritesheetAnimation001\\SpritesheetAnimation001.csproj|C:\\Git\\Monogame\\MonoGameSandBox\\spritesheetanimation001\\game1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{29FC5534-3C9D-430C-BCB3-2DBC2137A77F}|SpritesheetAnimation001\\SpritesheetAnimation001.csproj|solutionrelative:spritesheetanimation001\\game1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{29FC5534-3C9D-430C-BCB3-2DBC2137A77F}|SpritesheetAnimation001\\SpritesheetAnimation001.csproj|C:\\Git\\Monogame\\MonoGameSandBox\\spritesheetanimation001\\animation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{29FC5534-3C9D-430C-BCB3-2DBC2137A77F}|SpritesheetAnimation001\\SpritesheetAnimation001.csproj|solutionrelative:spritesheetanimation001\\animation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{29FC5534-3C9D-430C-BCB3-2DBC2137A77F}|SpritesheetAnimation001\\SpritesheetAnimation001.csproj|C:\\Git\\Monogame\\MonoGameSandBox\\spritesheetanimation001\\animationmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{29FC5534-3C9D-430C-BCB3-2DBC2137A77F}|SpritesheetAnimation001\\SpritesheetAnimation001.csproj|solutionrelative:spritesheetanimation001\\animationmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 243,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "InputManager.cs",
+              "DocumentMoniker": "C:\\Git\\Monogame\\MonoGameSandBox\\SpritesheetAnimation001\\InputManager.cs",
+              "RelativeDocumentMoniker": "SpritesheetAnimation001\\InputManager.cs",
+              "ToolTip": "C:\\Git\\Monogame\\MonoGameSandBox\\SpritesheetAnimation001\\InputManager.cs",
+              "RelativeToolTip": "SpritesheetAnimation001\\InputManager.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAEoAAAAZAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T07:11:17.923Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Knight.cs",
+              "DocumentMoniker": "C:\\Git\\Monogame\\MonoGameSandBox\\SpritesheetAnimation001\\Sprites\\Knight.cs",
+              "RelativeDocumentMoniker": "SpritesheetAnimation001\\Sprites\\Knight.cs",
+              "ToolTip": "C:\\Git\\Monogame\\MonoGameSandBox\\SpritesheetAnimation001\\Sprites\\Knight.cs",
+              "RelativeToolTip": "SpritesheetAnimation001\\Sprites\\Knight.cs",
+              "ViewState": "AQIAAEkAAAAAAAAAAAAWwG4AAAA4AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T07:12:00.948Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AnimationManager.cs",
+              "DocumentMoniker": "C:\\Git\\Monogame\\MonoGameSandBox\\SpritesheetAnimation001\\AnimationManager.cs",
+              "RelativeDocumentMoniker": "SpritesheetAnimation001\\AnimationManager.cs",
+              "ToolTip": "C:\\Git\\Monogame\\MonoGameSandBox\\SpritesheetAnimation001\\AnimationManager.cs",
+              "RelativeToolTip": "SpritesheetAnimation001\\AnimationManager.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAnAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T07:03:31.728Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Game1.cs",
+              "DocumentMoniker": "C:\\Git\\Monogame\\MonoGameSandBox\\SpritesheetAnimation001\\Game1.cs",
+              "RelativeDocumentMoniker": "SpritesheetAnimation001\\Game1.cs",
+              "ToolTip": "C:\\Git\\Monogame\\MonoGameSandBox\\SpritesheetAnimation001\\Game1.cs",
+              "RelativeToolTip": "SpritesheetAnimation001\\Game1.cs",
+              "ViewState": "AQIAAAUAAAAAAAAAAAAuwBcAAAArAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T07:01:44.85Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Animation.cs",
+              "DocumentMoniker": "C:\\Git\\Monogame\\MonoGameSandBox\\SpritesheetAnimation001\\Animation.cs",
+              "RelativeDocumentMoniker": "SpritesheetAnimation001\\Animation.cs",
+              "ToolTip": "C:\\Git\\Monogame\\MonoGameSandBox\\SpritesheetAnimation001\\Animation.cs",
+              "RelativeToolTip": "SpritesheetAnimation001\\Animation.cs",
+              "ViewState": "AQIAAFIAAAAAAAAAAAAQwDYAAAAkAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-06T07:10:39.299Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
