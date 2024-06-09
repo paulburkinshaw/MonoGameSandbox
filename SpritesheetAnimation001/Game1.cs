@@ -15,15 +15,12 @@ namespace SpritesheetAnimation001
         Color _background = Color.White;
 
         public static Rectangle Screen = new Rectangle(0, 0, 1024, 768);
-  
-        SpriteFont _font;
-
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             _graphics.IsFullScreen = false;
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;        
+            IsMouseVisible = true;
         }
 
         protected override void Initialize()
@@ -46,20 +43,18 @@ namespace SpritesheetAnimation001
 
         protected override void LoadContent()
         {
-             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
             Globals.SpriteBatch = _spriteBatch;
-        
-            _font = Globals.Content.Load<SpriteFont>("Font");
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-         
+
             Globals.Update(gameTime);
             _gameManager.Update();
-           
+
             base.Update(gameTime);
         }
 
@@ -68,13 +63,12 @@ namespace SpritesheetAnimation001
             GraphicsDevice.Clear(_background);
 
             _spriteBatch.Begin();
-            _gameManager.Draw();     
+            _gameManager.Draw();
             _spriteBatch.End();
 
             base.Draw(gameTime);
         }
 
-       
 
     }
 }
