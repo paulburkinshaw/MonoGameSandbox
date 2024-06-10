@@ -1,0 +1,8 @@
+The following information is useful when importing the sprite sheet into MonoGame:
+
+Output File:	knight_spritesheet.png
+JSON Data:		knight_spritesheet_array.json	
+6 frames, frame resolution: 65x64px
+
+
+

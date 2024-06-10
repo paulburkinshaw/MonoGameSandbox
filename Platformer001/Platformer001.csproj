@@ -24,6 +24,12 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="Content\aseprite_export_Instructions.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\knight_spritesheet.aseprite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Content\knight_spritesheet_array.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

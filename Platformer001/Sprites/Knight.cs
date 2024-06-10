@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.IO;
 
@@ -8,11 +9,12 @@ namespace Platformer001.Sprites;
 public class Knight
 {
     private Vector2 _position = new(300, 200);
-    private float _speed = 200f;
     private bool _jumping = false;
     private bool _attacking1 = false;
     private bool _attacking2 = false;
     private readonly AnimationManager _animationManager = new();
+
+    public float Speed => InputManager.Running ? 400f : 250f;
 
     public Knight()
     {
@@ -58,29 +60,19 @@ public class Knight
     }
 
     public void Update()
-    {
-        UpdateSpeed();
+    {      
         UpdatePosition();
         UpdateAnimation();
     }
 
-    private void UpdateSpeed()
-    {
-        if (InputManager.Running)
-        {
-            _speed = 300f;
-        }
-        else
-        {
-            _speed = 200f;
-        }
-    }
-
+   
     private void UpdatePosition()
     {
         if (InputManager.Moving)
         {
-            _position += Vector2.Normalize(InputManager.Direction) * _speed * Globals.ElapsedGameTimeSeconds;
+            var deltaTime = Globals.ElapsedGameTimeSeconds;
+            var _velocity = Vector2.Normalize(InputManager.Direction) * Speed;
+            _position += _velocity * deltaTime;
         }
     }
 
