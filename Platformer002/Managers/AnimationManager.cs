@@ -6,13 +6,13 @@ using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace Platformer002;
+namespace Platformer002.Managers;
 
 public class AnimationManager
 {
     private readonly Dictionary<AnimationType, Animation> _animationDictionary = [];
     private AnimationType? _currentKey;
-    private Animation? _currentAnimation;
+    private Animation _currentAnimation;
     private RenderTarget2D _animationRenderTarget = new RenderTarget2D(Globals.GraphicsDevice, Globals.InternalSize.Width, Globals.InternalSize.Height);
 
     public static event EventHandler<AnimationCompleteEventArgs> AnimationComplete = delegate { };

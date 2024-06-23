@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Input;
 using System;
 
-namespace Platformer002;
+namespace Platformer003.Managers;
 public abstract class InputManager
 {
     protected KeyboardState _keyboardStateOld = Keyboard.GetState();

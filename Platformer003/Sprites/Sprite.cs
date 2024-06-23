@@ -1,9 +1,9 @@
 ﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Platformer002.Managers;
+using Platformer003.Managers;
 
-namespace Platformer002.Sprites;
+namespace Platformer003.Sprites;
 
 public class SpriteContent
 {

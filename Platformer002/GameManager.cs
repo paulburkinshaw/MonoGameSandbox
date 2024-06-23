@@ -8,18 +8,16 @@ namespace Platformer002;
 
 public class GameManager
 {
-    private Knight _player1;
-    private Skeleton _player2;
-    private Map _map;
+    private PlayableSprite _player;
+    private TileMap _tileMap;
 
     public GameManager()
     {
-        _map = new();
-        _player1 = GetPlayer1();
-        _player2 = GetPlayer2();
+        _tileMap = new();
+        _player = GetPlayer();
     }
 
-    private Knight GetPlayer1()
+    private PlayableSprite GetPlayer()
     {
         var startPosition = new Vector2(0, 0);
         var size = new Rectangle(0, 0, 64, 64);
@@ -33,53 +31,25 @@ public class GameManager
         var animationManager = new AnimationManager();
         var knightInputManager = new KnightInputManager();
 
-        var player1 = new Knight(position: startPosition,
+        return new PlayableSprite(position: startPosition,
             size: size,
             spriteContent: spriteContent,
             animationManager: animationManager,
             inputManager: knightInputManager);
-
-        return player1;
     }
 
-    private Skeleton GetPlayer2()
+    public void Update()
     {
-        var startPosition = new Vector2(250, 0);
-        var size = new Rectangle(0, 0, 64, 64);
-
-        var spriteContent = new SpriteContent
-        {
-            Texture = Globals.Content.Load<Texture2D>("skeleton_spritesheet"),
-            AnimationConfig = File.ReadAllText(@"Content\skeleton_spritesheet_array.json")
-        };
-
-    var animationManager = new AnimationManager();
-    var skeletonInputManager = new SkeletonInputManager();
-
-    var player2 = new Skeleton(position: startPosition,
-        size: size,
-        spriteContent: spriteContent,
-        animationManager: animationManager,
-        inputManager: skeletonInputManager);
-
-        return player2;
+        _player.Update();
     }
 
-public void Update()
-{
-    _player1.Update();
-    _player2.Update();
-}
+    public void Draw()
+    {
+        _player.DrawToRenderTarget();       
 
-public void Draw()
-{
-    _player1.DrawToRenderTarget();
-    _player2.DrawToRenderTarget();
-
-    Globals.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
-    _map.Draw();
-    _player1.Draw();
-    _player2.Draw();
-    Globals.SpriteBatch.End();
-}
+        Globals.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
+        _tileMap.Draw();
+        _player.Draw();       
+        Globals.SpriteBatch.End();
+    }
 }

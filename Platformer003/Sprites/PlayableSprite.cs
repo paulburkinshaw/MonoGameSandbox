@@ -1,9 +1,9 @@
 using Microsoft.Xna.Framework;
-using Platformer002.Managers;
+using Platformer003.Managers;
 using System;
 
-namespace Platformer002.Sprites;
-public class Knight: Sprite
+namespace Platformer003.Sprites;
+public class PlayableSprite : Sprite
 {
     private const float JUMP = 200f;
     private float _speed => GetSpeed();  
@@ -12,13 +12,13 @@ public class Knight: Sprite
     private bool _attacking1 = false;
     private bool _attacking2 = false;
     private bool _onGround;
-    private KnightInputManager _inputManager;
+    private InputManager _inputManager;
 
-    public Knight(Vector2 position, 
+    public PlayableSprite(Vector2 position, 
         Rectangle size, 
         SpriteContent spriteContent, 
         AnimationManager animationManager,
-        KnightInputManager inputManager) : base(position, size, spriteContent, animationManager)
+        InputManager inputManager) : base(position, size, spriteContent, animationManager)
     {
         _inputManager = inputManager;
         _inputManager.JumpKeyPressed += OnJumpKeyPressed;
@@ -103,7 +103,7 @@ public class Knight: Sprite
 
         var newPositionBoundingBox = GetBoundingBox(newPosition);
 
-        var colliders = Map.GetNearestColliders(newPositionBoundingBox);
+        var colliders = TileMap.GetNearestColliders(newPositionBoundingBox);
 
         foreach (var collider in colliders)
         {

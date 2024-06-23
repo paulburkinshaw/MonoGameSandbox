@@ -3,22 +3,22 @@ using Platformer002.Managers;
 using System;
 
 namespace Platformer002.Sprites;
-public class Skeleton : Sprite
+public class PlayableSprite: Sprite
 {
     private const float JUMP = 200f;
-    private float _speed => GetSpeed();
+    private float _speed => GetSpeed();  
     private Vector2 _velocity;
     private bool _jumping = false;
     private bool _attacking1 = false;
     private bool _attacking2 = false;
     private bool _onGround;
-    private SkeletonInputManager _inputManager;
+    private KnightInputManager _inputManager;
 
-    public Skeleton(Vector2 position,
-        Rectangle size,
-        SpriteContent spriteContent,
+    public PlayableSprite(Vector2 position, 
+        Rectangle size, 
+        SpriteContent spriteContent, 
         AnimationManager animationManager,
-        SkeletonInputManager inputManager) : base(position, size, spriteContent, animationManager)
+        KnightInputManager inputManager) : base(position, size, spriteContent, animationManager)
     {
         _inputManager = inputManager;
         _inputManager.JumpKeyPressed += OnJumpKeyPressed;
@@ -103,35 +103,33 @@ public class Skeleton : Sprite
 
         var newPositionBoundingBox = GetBoundingBox(newPosition);
 
-        var colliders = Map.GetNearestColliders(newPositionBoundingBox);
+        var colliders = TileMap.GetNearestColliders(newPositionBoundingBox);
 
         foreach (var collider in colliders)
-        {
-            var collidingTile = collider.CollidingTile;
-
+        {          
             if (newPosition.X != _position.X)
             {
                 var newPositionXBoundingBox = GetBoundingBox(new Vector2(newPosition.X, _position.Y));
-                if (newPositionXBoundingBox.Intersects(collidingTile))
+                if (newPositionXBoundingBox.Intersects(collider))
                 {
-                    if (newPosition.X > _position.X) newPosition.X = collidingTile.Left - _size.Width;
-                    else newPosition.X = collidingTile.Right;
+                    if (newPosition.X > _position.X) newPosition.X = collider.Left - _size.Width;
+                    else newPosition.X = collider.Right;
                     continue;
                 }
             }
 
             var newPositionYBoundingBox = GetBoundingBox(new Vector2(_position.X, newPosition.Y));
-            if (newPositionYBoundingBox.Intersects(collidingTile))
+            if (newPositionYBoundingBox.Intersects(collider))
             {
                 if (_velocity.Y > 0)
                 {
-                    newPosition.Y = collidingTile.Top - _size.Height;
+                    newPosition.Y = collider.Top - _size.Height;
                     _onGround = true;
                     _velocity.Y = 0;
                 }
                 else
                 {
-                    newPosition.Y = collidingTile.Bottom;
+                    newPosition.Y = collider.Bottom;
                     _velocity.Y = 0;
                 }
             }
@@ -177,4 +175,5 @@ public class Skeleton : Sprite
     {
         _animationManager.Draw();
     }
+
 }

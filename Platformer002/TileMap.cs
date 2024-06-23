@@ -5,62 +5,25 @@ using System.Collections.Generic;
 
 namespace Platformer002;
 
-public class Collider
-{
-    public Rectangle CollidingTile;
-    public Matrix Matrix;
-    public Color[,] ColourData;
-}
-
 public class TileMap
-{
-    public Rectangle CollidingTile;
-    public Matrix Matrix;
-
-    public int[,] Tiles;
-
-    public Rectangle[,] Colliders;
-
-    public Matrix[,] Matrices;
-
-    public int this[int y, int x]
-    {
-        get
-        {
-            return Tiles[y, x];
-        }
-        set
-        {
-            Tiles[y, x] = value;
-
-        }
-    }
-}
-
-public class Map
 {
     private readonly RenderTarget2D _renderTarget;
     public static readonly int TILE_SIZE = 32;
 
-    public static TileMap TileMap = new TileMap();
-
     // 6 rows(y), 10 columns(x)
     public static readonly int[,] tiles = new int[6, 10] {
-        {0,0,0,0,0,0,0,0,0,0 },
-        {0,0,0,0,0,0,0,0,0,0 },
-        {0,0,0,0,0,0,0,0,0,0 },
-        {0,0,0,0,0,0,0,0,0,0 },
-        {0,0,0,0,0,0,0,0,0,0 },
-        {1,1,1,1,1,1,1,1,1,1 }
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0},
+        {1,1,1,1,1,1,1,1,1,1}
     };
 
-    private static Collider[,] Colliders { get; } = new Collider[tiles.GetLength(0), tiles.GetLength(1)];
+    private static Rectangle[,] Colliders { get; } = new Rectangle[tiles.GetLength(0), tiles.GetLength(1)];
 
-    public Map()
+    public TileMap()
     {
-        TileMap.Tiles = tiles;
-        TileMap.Colliders = new Rectangle[tiles.GetLength(0), tiles.GetLength(1)];
-
         _renderTarget = new RenderTarget2D(Globals.GraphicsDevice, Globals.InternalSize.Width, Globals.InternalSize.Height);
 
         var tile1Texture = Globals.Content.Load<Texture2D>("Tile1");
@@ -68,7 +31,6 @@ public class Map
         Globals.GraphicsDevice.SetRenderTarget(_renderTarget);
         Globals.GraphicsDevice.Clear(Globals.Background);
         Globals.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
-
 
         for (int y = 0; y < tiles.GetLength(0); y++)
         {
@@ -79,17 +41,9 @@ public class Map
                 var positionX = x * TILE_SIZE;
                 var positionY = y * TILE_SIZE;
 
-                Colliders[y, x] = new Collider
-                {
-                    CollidingTile = new Rectangle(positionX, positionY, TILE_SIZE, TILE_SIZE),
-                    Matrix = GetTranformationMatrix(positionX, positionY),
-                    ColourData = Globals.GetColourDataFromTexture(tile1Texture, new Rectangle(0, 0, 32, 32))
-                };
-
-                TileMap.Colliders[y, x] = new Rectangle(positionX, positionY, TILE_SIZE, TILE_SIZE);
+                Colliders[y, x] = new(positionX, positionY, TILE_SIZE, TILE_SIZE);
 
                 Globals.SpriteBatch.Draw(tile1Texture, new Vector2(positionX, positionY), new Rectangle(0, 0, 32, 32), Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
-
             }
         }
 
@@ -98,7 +52,7 @@ public class Map
 
     }
 
-    public static List<Collider> GetNearestColliders(Rectangle boundingBox)
+    public static List<Rectangle> GetNearestColliders(Rectangle boundingBox)
     {
         int leftTile = (int)Math.Floor((float)boundingBox.Left / TILE_SIZE);
         int rightTile = (int)Math.Ceiling((float)boundingBox.Right / TILE_SIZE) - 1;
@@ -110,7 +64,7 @@ public class Map
         var topTile2 = MathHelper.Clamp(topTile, 0, tiles.GetLength(0));
         var bottomTile2 = MathHelper.Clamp(bottomTile, 0, tiles.GetLength(0));
 
-        List<Collider> colliders = [];
+        List<Rectangle> colliders = [];
 
         for (int y = topTile2; y <= bottomTile2; y++)
         {
@@ -124,11 +78,6 @@ public class Map
         }
 
         return colliders;
-    }
-
-    private Matrix GetTranformationMatrix(int positionX, int positionY)
-    {
-        return Matrix.CreateTranslation(positionX, positionY, 0);
     }
 
     public void Draw()

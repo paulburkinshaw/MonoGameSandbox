@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Platformer002;
+namespace Platformer003;
 
 public class Physics
 {
@@ -18,8 +18,11 @@ public static class Globals
     public static GraphicsDevice GraphicsDevice { get; set; }
     public static Rectangle InternalSize { get; set; }
     public static Rectangle WindowSize { get; set; }
+
     public static Color Background { get; set; }
+
     public static Physics Physics => new();
+
 
     public static Color[,] GetColourDataFromTexture(Texture2D texture, Rectangle sourceRectangle)
     {
@@ -36,6 +39,12 @@ public static class Globals
             }
         }
         return colourData2D;
+    }
+
+    public static bool TexturesCollide(Color[,] texture1, Matrix matrix1, Color[,] texture2, Matrix matrix2)
+    {
+
+        return false;
     }
 
     public static void Update(GameTime gt)
