@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Platformer003.Managers;
 
-public class KnightInputManager : InputManager
+public class Player1InputManager : InputManager
 {
 
     public override void Update()

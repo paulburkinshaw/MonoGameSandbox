@@ -4,7 +4,7 @@ using System;
 
 namespace Platformer003.Managers;
 
-public class SkeletonInputManager : InputManager
+public class Player2InputManager : InputManager
 {
 
     public override void Update()

@@ -31,13 +31,13 @@ public class GameManager
         };
 
         var animationManager = new AnimationManager();
-        var knightInputManager = new KnightInputManager();
+        var player1InputManager = new Player1InputManager();
 
         var player1 = new PlayableSprite(position: startPosition,
             size: size,
             spriteContent: spriteContent,
             animationManager: animationManager,
-            inputManager: knightInputManager);
+            inputManager: player1InputManager);
 
         return player1;
     }
@@ -54,13 +54,13 @@ public class GameManager
         };
 
     var animationManager = new AnimationManager();
-    var skeletonInputManager = new SkeletonInputManager();
+    var player2InputManager = new Player2InputManager();
 
     var player2 = new PlayableSprite(position: startPosition,
         size: size,
         spriteContent: spriteContent,
         animationManager: animationManager,
-        inputManager: skeletonInputManager);
+        inputManager: player2InputManager);
 
         return player2;
     }
