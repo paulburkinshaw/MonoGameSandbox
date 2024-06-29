@@ -3,16 +3,32 @@
   "WorkspaceRootPath": "C:\\Git\\Monogame\\MonoGameSandBox\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7CA3811D-4993-49ED-8627-E69B640A87D4}|Platformer003\\Platformer003.csproj|c:\\git\\monogame\\monogamesandbox\\platformer003\\gamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7CA3811D-4993-49ED-8627-E69B640A87D4}|Platformer003\\Platformer003.csproj|solutionrelative:platformer003\\gamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{937B1792-35D1-4183-9ACC-EAA23DE1CD38}|Platformer004\\Platformer004.csproj|c:\\git\\monogame\\monogamesandbox\\platformer004\\animation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{937B1792-35D1-4183-9ACC-EAA23DE1CD38}|Platformer004\\Platformer004.csproj|solutionrelative:platformer004\\animation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7CA3811D-4993-49ED-8627-E69B640A87D4}|Platformer003\\Platformer003.csproj|c:\\git\\monogame\\monogamesandbox\\platformer003\\managers\\player1inputmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7CA3811D-4993-49ED-8627-E69B640A87D4}|Platformer003\\Platformer003.csproj|solutionrelative:platformer003\\managers\\player1inputmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{937B1792-35D1-4183-9ACC-EAA23DE1CD38}|Platformer004\\Platformer004.csproj|C:\\Git\\Monogame\\MonoGameSandBox\\platformer004\\globals.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{937B1792-35D1-4183-9ACC-EAA23DE1CD38}|Platformer004\\Platformer004.csproj|solutionrelative:platformer004\\globals.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7CA3811D-4993-49ED-8627-E69B640A87D4}|Platformer003\\Platformer003.csproj|c:\\git\\monogame\\monogamesandbox\\platformer003\\managers\\player2inputmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7CA3811D-4993-49ED-8627-E69B640A87D4}|Platformer003\\Platformer003.csproj|solutionrelative:platformer003\\managers\\player2inputmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{937B1792-35D1-4183-9ACC-EAA23DE1CD38}|Platformer004\\Platformer004.csproj|c:\\git\\monogame\\monogamesandbox\\platformer004\\gamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{937B1792-35D1-4183-9ACC-EAA23DE1CD38}|Platformer004\\Platformer004.csproj|solutionrelative:platformer004\\gamemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{937B1792-35D1-4183-9ACC-EAA23DE1CD38}|Platformer004\\Platformer004.csproj|C:\\Git\\Monogame\\MonoGameSandBox\\platformer004\\game1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{937B1792-35D1-4183-9ACC-EAA23DE1CD38}|Platformer004\\Platformer004.csproj|solutionrelative:platformer004\\game1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{937B1792-35D1-4183-9ACC-EAA23DE1CD38}|Platformer004\\Platformer004.csproj|C:\\Git\\Monogame\\MonoGameSandBox\\platformer004\\managers\\animationmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{937B1792-35D1-4183-9ACC-EAA23DE1CD38}|Platformer004\\Platformer004.csproj|solutionrelative:platformer004\\managers\\animationmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{937B1792-35D1-4183-9ACC-EAA23DE1CD38}|Platformer004\\Platformer004.csproj|C:\\Git\\Monogame\\MonoGameSandBox\\platformer004\\sprites\\sprite.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{937B1792-35D1-4183-9ACC-EAA23DE1CD38}|Platformer004\\Platformer004.csproj|solutionrelative:platformer004\\sprites\\sprite.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{937B1792-35D1-4183-9ACC-EAA23DE1CD38}|Platformer004\\Platformer004.csproj|C:\\Git\\Monogame\\MonoGameSandBox\\platformer004\\sprites\\playablesprite.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{937B1792-35D1-4183-9ACC-EAA23DE1CD38}|Platformer004\\Platformer004.csproj|solutionrelative:platformer004\\sprites\\playablesprite.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -21,46 +37,102 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 847,
-          "SelectedChildIndex": 2,
+          "DockedWidth": 239,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Player2InputManager.cs",
-              "DocumentMoniker": "C:\\Git\\Monogame\\MonoGameSandBox\\Platformer003\\Managers\\Player2InputManager.cs",
-              "RelativeDocumentMoniker": "Platformer003\\Managers\\Player2InputManager.cs",
-              "ToolTip": "C:\\Git\\Monogame\\MonoGameSandBox\\Platformer003\\Managers\\Player2InputManager.cs",
-              "RelativeToolTip": "Platformer003\\Managers\\Player2InputManager.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAJAAAA",
+              "DocumentIndex": 1,
+              "Title": "Globals.cs",
+              "DocumentMoniker": "C:\\Git\\Monogame\\MonoGameSandBox\\Platformer004\\Globals.cs",
+              "RelativeDocumentMoniker": "Platformer004\\Globals.cs",
+              "ToolTip": "C:\\Git\\Monogame\\MonoGameSandBox\\Platformer004\\Globals.cs",
+              "RelativeToolTip": "Platformer004\\Globals.cs",
+              "ViewState": "AQIAABEAAAAAAAAAAAAYwCAAAAAKAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-23T07:01:52.5Z",
+              "WhenOpened": "2024-06-26T08:34:58.609Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Player1InputManager.cs",
-              "DocumentMoniker": "C:\\Git\\Monogame\\MonoGameSandBox\\Platformer003\\Managers\\Player1InputManager.cs",
-              "RelativeDocumentMoniker": "Platformer003\\Managers\\Player1InputManager.cs",
-              "ToolTip": "C:\\Git\\Monogame\\MonoGameSandBox\\Platformer003\\Managers\\Player1InputManager.cs",
-              "RelativeToolTip": "Platformer003\\Managers\\Player1InputManager.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "DocumentIndex": 3,
+              "Title": "Game1.cs",
+              "DocumentMoniker": "C:\\Git\\Monogame\\MonoGameSandBox\\Platformer004\\Game1.cs",
+              "RelativeDocumentMoniker": "Platformer004\\Game1.cs",
+              "ToolTip": "C:\\Git\\Monogame\\MonoGameSandBox\\Platformer004\\Game1.cs",
+              "RelativeToolTip": "Platformer004\\Game1.cs",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAAwBYAAAA9AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-23T16:30:05.299Z",
+              "WhenOpened": "2024-06-27T13:52:53.089Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "GameManager.cs",
+              "DocumentMoniker": "C:\\Git\\Monogame\\MonoGameSandBox\\Platformer004\\GameManager.cs",
+              "RelativeDocumentMoniker": "Platformer004\\GameManager.cs",
+              "ToolTip": "C:\\Git\\Monogame\\MonoGameSandBox\\Platformer004\\GameManager.cs",
+              "RelativeToolTip": "Platformer004\\GameManager.cs",
+              "ViewState": "AQIAAK4AAAAAAAAAAAAAAAUAAAAQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-26T08:26:28.059Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 272,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "PlayableSprite.cs",
+              "DocumentMoniker": "C:\\Git\\Monogame\\MonoGameSandBox\\Platformer004\\Sprites\\PlayableSprite.cs",
+              "RelativeDocumentMoniker": "Platformer004\\Sprites\\PlayableSprite.cs",
+              "ToolTip": "C:\\Git\\Monogame\\MonoGameSandBox\\Platformer004\\Sprites\\PlayableSprite.cs",
+              "RelativeToolTip": "Platformer004\\Sprites\\PlayableSprite.cs",
+              "ViewState": "AQIAAHEAAAAAAAAAAAAUwIwAAAA3AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-26T08:26:30.468Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Sprite.cs",
+              "DocumentMoniker": "C:\\Git\\Monogame\\MonoGameSandBox\\Platformer004\\Sprites\\Sprite.cs",
+              "RelativeDocumentMoniker": "Platformer004\\Sprites\\Sprite.cs",
+              "ToolTip": "C:\\Git\\Monogame\\MonoGameSandBox\\Platformer004\\Sprites\\Sprite.cs",
+              "RelativeToolTip": "Platformer004\\Sprites\\Sprite.cs",
+              "ViewState": "AQIAACAAAAAAAAAAAAAAADIAAAAVAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-26T08:26:31.049Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AnimationManager.cs",
+              "DocumentMoniker": "C:\\Git\\Monogame\\MonoGameSandBox\\Platformer004\\Managers\\AnimationManager.cs",
+              "RelativeDocumentMoniker": "Platformer004\\Managers\\AnimationManager.cs",
+              "ToolTip": "C:\\Git\\Monogame\\MonoGameSandBox\\Platformer004\\Managers\\AnimationManager.cs",
+              "RelativeToolTip": "Platformer004\\Managers\\AnimationManager.cs",
+              "ViewState": "AQIAADMAAAAAAAAAAAAowBUAAAAdAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-26T09:27:44.308Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "GameManager.cs",
-              "DocumentMoniker": "C:\\Git\\Monogame\\MonoGameSandBox\\Platformer003\\GameManager.cs",
-              "RelativeDocumentMoniker": "Platformer003\\GameManager.cs",
-              "ToolTip": "C:\\Git\\Monogame\\MonoGameSandBox\\Platformer003\\GameManager.cs",
-              "RelativeToolTip": "Platformer003\\GameManager.cs",
-              "ViewState": "AQIAABkAAAAAAAAAAAAQwD4AAAApAAAA",
+              "Title": "Animation.cs",
+              "DocumentMoniker": "C:\\Git\\Monogame\\MonoGameSandBox\\Platformer004\\Animation.cs",
+              "RelativeDocumentMoniker": "Platformer004\\Animation.cs",
+              "ToolTip": "C:\\Git\\Monogame\\MonoGameSandBox\\Platformer004\\Animation.cs",
+              "RelativeToolTip": "Platformer004\\Animation.cs",
+              "ViewState": "AQIAAI8AAAAAAAAAAAAxwH4AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-23T16:29:31.313Z",
+              "WhenOpened": "2024-06-26T09:29:52.28Z",
               "EditorCaption": ""
             }
           ]

@@ -29,13 +29,13 @@ public class GameManager
         };
 
         var animationManager = new AnimationManager();
-        var knightInputManager = new KnightInputManager();
+        var inputManager = new InputManager();
 
         return new PlayableSprite(position: startPosition,
             size: size,
             spriteContent: spriteContent,
             animationManager: animationManager,
-            inputManager: knightInputManager);
+            inputManager: inputManager);
     }
 
     public void Update()

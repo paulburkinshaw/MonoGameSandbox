@@ -21,23 +21,6 @@ public static class Globals
     public static Color Background { get; set; }
     public static Physics Physics => new();
 
-    public static Color[,] GetColourDataFromTexture(Texture2D texture, Rectangle sourceRectangle)
-    {
-        Color[] colourData1D = new Color[sourceRectangle.Width * sourceRectangle.Height];
-        texture.GetData(0, rect: sourceRectangle, colourData1D, 0, colourData1D.Length);
-
-        Color[,] colourData2D = new Color[sourceRectangle.Width, sourceRectangle.Height];
-        for (int x = 0; x < sourceRectangle.Width; x++)
-        {
-            for (int y = 0; y < sourceRectangle.Height; y++)
-            {
-                var arrayIndexOffset = x + (y * sourceRectangle.Width);
-                colourData2D[x, y] = colourData1D[arrayIndexOffset];
-            }
-        }
-        return colourData2D;
-    }
-
     public static void Update(GameTime gt)
     {
         ElapsedGameTimeSeconds = (float)gt.ElapsedGameTime.TotalSeconds;

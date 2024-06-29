@@ -12,13 +12,13 @@ public class PlayableSprite: Sprite
     private bool _attacking1 = false;
     private bool _attacking2 = false;
     private bool _onGround;
-    private KnightInputManager _inputManager;
+    private InputManager _inputManager;
 
     public PlayableSprite(Vector2 position, 
         Rectangle size, 
         SpriteContent spriteContent, 
         AnimationManager animationManager,
-        KnightInputManager inputManager) : base(position, size, spriteContent, animationManager)
+        InputManager inputManager) : base(position, size, spriteContent, animationManager)
     {
         _inputManager = inputManager;
         _inputManager.JumpKeyPressed += OnJumpKeyPressed;

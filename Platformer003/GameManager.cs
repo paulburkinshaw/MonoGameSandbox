@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Platformer003.Managers;
 using Platformer003.Sprites;
 using System.IO;
@@ -31,13 +32,20 @@ public class GameManager
         };
 
         var animationManager = new AnimationManager();
-        var player1InputManager = new Player1InputManager();
+
+        var inputManager = new InputManager(
+           leftKey: Keys.A,
+           righttKey: Keys.D,
+           attack1Key: Keys.Space,
+           attack2Key: Keys.LeftControl,
+           runKey: Keys.LeftShift,
+           jumpKey: Keys.W);
 
         var player1 = new PlayableSprite(position: startPosition,
             size: size,
             spriteContent: spriteContent,
             animationManager: animationManager,
-            inputManager: player1InputManager);
+            inputManager: inputManager);
 
         return player1;
     }
@@ -54,13 +62,20 @@ public class GameManager
         };
 
     var animationManager = new AnimationManager();
-    var player2InputManager = new Player2InputManager();
 
-    var player2 = new PlayableSprite(position: startPosition,
+        var inputManager = new InputManager(
+                   leftKey: Keys.J,
+                   righttKey: Keys.L,
+                   attack1Key: Keys.Enter,
+                   attack2Key: Keys.RightControl,
+                   runKey: Keys.RightShift,
+                   jumpKey: Keys.I);
+
+        var player2 = new PlayableSprite(position: startPosition,
         size: size,
         spriteContent: spriteContent,
         animationManager: animationManager,
-        inputManager: player2InputManager);
+        inputManager: inputManager);
 
         return player2;
     }

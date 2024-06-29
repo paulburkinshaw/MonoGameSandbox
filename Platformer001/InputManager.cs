@@ -75,8 +75,7 @@ public static class InputManager
                 OnAttack2KeyPressed();
             }
         }
-
-        // _running = false;
+     
         _keyboardStateOld = keyboardState;
 
     }
