@@ -1,4 +1,4 @@
-﻿# Platformer002 - Gravity and Collision Detection
+﻿# Platformer002 - Gravity and AABB Collision Detection
 
 This tutorial builds on Platformer001 and adds gravity when jumping and collision detection (the sprite colliding against the floor when landing from a jump)
 

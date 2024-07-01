@@ -13,6 +13,8 @@ public class GameManager
     private TileMap _tileMap;
     private bool _colliding = false;
 
+    private RenderTarget2D _collisionRenderTarget = new RenderTarget2D(Globals.GraphicsDevice, Globals.InternalSize.Width, Globals.InternalSize.Height);
+
     public GameManager()
     {
         _tileMap = new TileMap();
@@ -90,17 +92,15 @@ public class GameManager
 
     private void CheckPlayerCollision()
     {
-
         _colliding = false;
 
         if (_player1.BoundingBox.Intersects(_player2.BoundingBox))
         {
-
             var texturesCollide = Globals.SpriteTexturesCollide(_player1, _player2);
 
             if (texturesCollide)
             {
-                _colliding = true;
+                _colliding = true;            
             }
 
         }
@@ -112,7 +112,13 @@ public class GameManager
         _player1.DrawToRenderTarget();
         _player2.DrawToRenderTarget();
 
+        if (_colliding)
+            DrawCollisionTextureToRenderTarget();
+
         Globals.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
+
+        if (_colliding)
+            Globals.SpriteBatch.Draw(_collisionRenderTarget, new Rectangle(0, 0, Globals.WindowSize.Width, Globals.WindowSize.Height), Color.White);
 
         _tileMap.Draw();
         _player1.Draw();
@@ -121,6 +127,14 @@ public class GameManager
         Globals.SpriteBatch.End();
     }
 
-
+    private void DrawCollisionTextureToRenderTarget()
+    {
+        Globals.GraphicsDevice.SetRenderTarget(_collisionRenderTarget);
+        Globals.GraphicsDevice.Clear(Color.Red);
+        Globals.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
+        Globals.SpriteBatch.Draw(new Texture2D(Globals.GraphicsDevice, 1,1), new Vector2(0, 0), Color.White);
+        Globals.SpriteBatch.End();
+        Globals.GraphicsDevice.SetRenderTarget(null);
+    }
 
 }

@@ -27,8 +27,6 @@ public class TileMap
         {1,1,1,1,1,1,1,1,1,1 }
     };
 
-
-
     private static Collider[,] Colliders { get; } = new Collider[tiles.GetLength(0), tiles.GetLength(1)];
 
     public TileMap()
@@ -38,7 +36,7 @@ public class TileMap
         var tile1Texture = Globals.Content.Load<Texture2D>("Tile1");
 
         Globals.GraphicsDevice.SetRenderTarget(_renderTarget);
-        Globals.GraphicsDevice.Clear(Globals.Background);
+        Globals.GraphicsDevice.Clear(Color.Transparent);
         Globals.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
 
         for (int y = 0; y < tiles.GetLength(0); y++)
@@ -54,7 +52,7 @@ public class TileMap
                 {
                     CollidingTile = new Rectangle(positionX, positionY, TILE_SIZE, TILE_SIZE),
                     Matrix = GetTranformationMatrix(positionX, positionY),
-                   // ColourData = Globals.GetColourDataFromTexture(tile1Texture, new Rectangle(0, 0, 32, 32))
+                    ColourData = Globals.GetColourDataFromTexture(tile1Texture, new Rectangle(0, 0, 32, 32))
                 };
              
                 Globals.SpriteBatch.Draw(tile1Texture, new Vector2(positionX, positionY), new Rectangle(0, 0, 32, 32), Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);

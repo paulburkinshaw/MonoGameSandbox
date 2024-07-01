@@ -93,9 +93,7 @@ public abstract class Sprite
         var newXPositionBoundingBox = new Rectangle((int)newXPosition, (int)_position.Y, _size.Width, _size.Height);
 
         var colliders = TileMap.GetNearestColliders(newXPositionBoundingBox);
-
-        //var collidingTile = new Rectangle(0, 0, 0, 0);
-
+     
         if (!CollidesWithTile(colliders: colliders, newPosition: new Vector2(newXPosition, _position.Y), out Rectangle collidingTile))
         {
             _position.X = newXPosition;
@@ -117,8 +115,6 @@ public abstract class Sprite
         var newYPositionBoundingBox = new Rectangle((int)_position.X, (int)newYPosition, _size.Width, _size.Height);
 
         var colliders = TileMap.GetNearestColliders(newYPositionBoundingBox);
-
-        // var collidingTile = new Rectangle(0, 0, 0, 0);
 
         if (!CollidesWithTile(colliders: colliders, newPosition: new Vector2(_position.X, newYPosition), out Rectangle collidingTile))
         {

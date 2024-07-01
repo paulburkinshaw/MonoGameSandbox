@@ -16,6 +16,8 @@ public class DebugGameManager
     private TileMap _tileMap;
     private bool _colliding = false;
 
+    private RenderTarget2D _collisionRenderTarget = new RenderTarget2D(Globals.GraphicsDevice, Globals.InternalSize.Width, Globals.InternalSize.Height);
+
     #region debug
     Texture2D _sprite1BoundingBoxTexture;
     Texture2D _sprite2BoundingBoxTexture;
@@ -174,11 +176,17 @@ public class DebugGameManager
         _player1.DrawToRenderTarget();
         _player2.DrawToRenderTarget();
 
+        if (_colliding)
+            DrawCollisionTextureToRenderTarget();
+
         #region debug
         DrawBoundingBoxTexturesToRenderTarget();
         #endregion
 
         Globals.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
+
+        if (_colliding)
+            Globals.SpriteBatch.Draw(_collisionRenderTarget, new Rectangle(0, 0, Globals.WindowSize.Width, Globals.WindowSize.Height), Color.White);
 
         _tileMap.Draw();
         _player1.Draw();
@@ -197,6 +205,15 @@ public class DebugGameManager
         Globals.SpriteBatch.End();
     }
 
+    private void DrawCollisionTextureToRenderTarget()
+    {
+        Globals.GraphicsDevice.SetRenderTarget(_collisionRenderTarget);
+        Globals.GraphicsDevice.Clear(Color.Red);
+        Globals.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
+        Globals.SpriteBatch.Draw(new Texture2D(Globals.GraphicsDevice, 1, 1), new Vector2(0, 0), Color.White);
+        Globals.SpriteBatch.End();
+        Globals.GraphicsDevice.SetRenderTarget(null);
+    }
 
     #region debug
     private void ToggleBoundingBox_Click(object sender, System.EventArgs e)
