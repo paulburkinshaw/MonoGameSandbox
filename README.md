@@ -32,6 +32,7 @@
     - [Setting up your tilemap](#setting-up-your-tilemap)
     - [Exporting your tilemap](#exporting-your-tilemap)
     - [Reading the tileset and tilemap in Monogame](#reading-the-tileset-and-tilemap-in-monogame)
+- [Debugging](#debugging)
   
 # MonoGameSandbox
 
@@ -279,3 +280,21 @@ eg to get the x and y position of a `32x32px` tile in the `43`rd position within
 - y position:  (1376 / 608) * 32 = 64 
 
 
+<hr/>
+
+
+
+# Debugging
+Given that MonoGame is only a thin library, most of your game logic is probably not very tied in with the actual XNA code anyway. This should make it easy to make your game deeply testable outside of MonoGame.
+
+Have you considered creating a lightweight version of your game logic that cuts out the content pipeline?
+
+If you are really clean in separating game logic from presentation/UI then large parts of your code should be able to run in a unit-test/integration test like fashion. The only thing that MonoGame gives you is a `GameTime` struct on the `Update(..)` call. You dont need a `Game` object to make that call - you can provide that yourself during a test. This way bug hunting becomes a heck of a lot easier as you can just let the game run from a well-known state until you hit the bug or pass the test.
+
+Likewise: If your game is grid based, you could use SadConsole as a lightweight alternative rendering method. This is especially great for turn based games, but can even be adapted to action games (with reduced visuals, of course. Just clip/round your positions to the nearest cell-positions/int-coordinates for crude visualisations).
+
+For my style of games (strategy and old school turn based RPGs) this works remarkably well and even allows me to delay graphic decisions until I nailed the core game systems. As a bonus, most of my games end up having an ASCII debug mode even in the final version, as bug reports are so much easier to understand when you see a readable visual snapshot of the game state.
+
+The Run/Debug command will only build whatever is a direct dependency of your run target. So if your project has a "Core" library project that holds the game logic, then you can have two UI projects in your solution that depend on "Core". One initializes a full game, including your Content directory, the other is a light weight thing with no extra content (like the aforementioned SadConsole renderer). As a bonus you can even add a unit-test project to test your logic/calculations in an automated way.
+
+(Note that MonoGame 3.8 works nicely in library projects laid out that way. Once you have tasted the ability to do lightweight testing, working with fat game engines like Unity will feel like torture.)

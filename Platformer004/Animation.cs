@@ -169,8 +169,8 @@ namespace Platformer004
         public void DrawToRenderTarget(Vector2 position)
         {
             Globals.GraphicsDevice.SetRenderTarget(_animationRenderTarget);
-            Globals.GraphicsDevice.Clear(Color.Transparent);
-            Globals.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
+            Globals.GraphicsDevice.Clear(Color.Transparent);      
+            Globals.SpriteBatch.Begin();
             Globals.SpriteBatch.Draw(_texture, position, _frames[_currentFrame].FrameSourceRectangle, Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
             Globals.SpriteBatch.End();
             Globals.GraphicsDevice.SetRenderTarget(null);

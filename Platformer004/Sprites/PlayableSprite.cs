@@ -138,7 +138,7 @@ public class PlayableSprite : Sprite
         }
         else
         {
-            _animationManager.Update(AnimationType.Walk);
+            _animationManager.Update(AnimationType.Ready);
         }
       
     }
