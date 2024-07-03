@@ -17,15 +17,14 @@ public class AnimationManager
 
     public event EventHandler<AnimationStartedEventArgs> AnimationStarted = delegate { };
     public event EventHandler<AnimationCompleteEventArgs> AnimationComplete = delegate { };
-    public event EventHandler<AnimationFrameChangedEventArgs> AnimationFrameChanged = delegate { };
-
+   
     public AnimationManager()
     {
-          
+
     }
     void OnAnimationStarted(object sender, AnimationStartedEventArgs args)
     {
-        _currentAnimation = args.Animation;
+        //_currentAnimation = args.Animation;
         if (AnimationStarted != null)
             AnimationStarted(this, args);
     }
@@ -35,18 +34,11 @@ public class AnimationManager
             AnimationComplete(this, args);
     }
 
-    void OnAnimationFrameChanged(object sender, AnimationFrameChangedEventArgs args)
-    {
-        if (AnimationFrameChanged != null)
-            AnimationFrameChanged(this, args);
-    }
-
     public void AddAnimation(AnimationType key, Animation animation)
     {
         animation.AnimationStarted += OnAnimationStarted;
         animation.AnimationComplete += OnAnimationComplete;
-        animation.AnimationFrameChanged += OnAnimationFrameChanged;
-
+     
         _animationDictionary.Add(key, animation);
         _currentKey ??= key;
         _currentAnimation ??= animation;
@@ -66,14 +58,21 @@ public class AnimationManager
     {
         var jsonObject = JObject.Parse(jsonFile);
 
-        var spriteFrames = JsonConvert.DeserializeObject<IList<Frame>>(
-        jsonObject["frames"].ToString(),
+        var spritesheetData = JsonConvert.DeserializeObject<SpritesheetData>(
+        jsonObject.ToString(),
         new JsonSerializerSettings
         {
-            Converters = new List<JsonConverter> { new AnimationFrameConverter() }
+            Converters = new List<JsonConverter> { new SpritesheetDataConverter() }
         });
 
-        return spriteFrames.GroupBy(x => x.AnimationType).Select(g => new Animation(texture: texture, animationType: g.Key, frames: g.ToList(), frameCount: g.Count(), animationRenderTarget: _animationRenderTarget));
+        return spritesheetData.Frames
+            .GroupBy(x => x.AnimationType)
+            .Select(g => new Animation(texture: texture,
+                                       animationType: g.Key,
+                                       frames: g.ToList(),
+                                       frameCount: g.Count(),
+                                       animationRenderTarget: _animationRenderTarget)
+            );
     }
 
     public void Update(AnimationType key)
@@ -86,11 +85,13 @@ public class AnimationManager
                 _currentAnimation.Reset();
             }
 
-            animation.Start();
-
-            _currentKey = key;
-            _currentAnimation = animation;
-
+            if (!animation.Active)
+            {
+                animation.Start();
+                _currentKey = key;
+                _currentAnimation = animation;
+            }
+            
             animation.Update();
         }
         else

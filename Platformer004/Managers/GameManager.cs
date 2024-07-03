@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Platformer004.Sprites;
 using System.IO;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Platformer004.Managers;
 
@@ -12,8 +13,16 @@ public class GameManager
     private PlayableSprite _player2;
     private TileMap _tileMap;
     private bool _colliding = false;
-
+    SpriteFont _font = Globals.Content.Load<SpriteFont>("Font");
     private RenderTarget2D _collisionRenderTarget = new RenderTarget2D(Globals.GraphicsDevice, Globals.InternalSize.Width, Globals.InternalSize.Height);
+    CollisionData _collisionData = new()
+    {
+        ScreenCoordinates = Vector2.Zero,
+        PixelCoordinatesA = Vector2.Zero,
+        PixelCoordinatesB = Vector2.Zero
+    };
+    private int _player1Score;
+    private int _player2Score;
 
     public GameManager()
     {
@@ -88,6 +97,8 @@ public class GameManager
         _player2.Update();
 
         CheckPlayerCollision();
+
+        UpdatePlayerScores();
     }
 
     private void CheckPlayerCollision()
@@ -96,7 +107,7 @@ public class GameManager
 
         if (_player1.BoundingBox.Intersects(_player2.BoundingBox))
         {
-            var texturesCollide = Globals.SpriteTexturesCollide(_player1, _player2);
+            var texturesCollide = Globals.SpriteTexturesCollide(_player1, _player2, _collisionData);
 
             if (texturesCollide)
             {
@@ -104,7 +115,17 @@ public class GameManager
             }
 
         }
+    }
+    private void UpdatePlayerScores()
+    {
+        if (_colliding)
+        {
+            if (_player1.Attacking && _collisionData.CurrentAnimationFrameA.Hit)
+                _player1Score += 1;
 
+            if (_player2.Attacking && _collisionData.CurrentAnimationFrameB.Hit)
+                _player2Score += 1;
+        }
     }
 
     public void Draw()
@@ -123,6 +144,7 @@ public class GameManager
         _tileMap.Draw();
         _player1.Draw();
         _player2.Draw();
+        DrawPlayerScores();
 
         Globals.SpriteBatch.End();
     }
@@ -135,6 +157,12 @@ public class GameManager
         Globals.SpriteBatch.Draw(new Texture2D(Globals.GraphicsDevice, 1,1), new Vector2(0, 0), Color.White);
         Globals.SpriteBatch.End();
         Globals.GraphicsDevice.SetRenderTarget(null);
+    }
+
+    private void DrawPlayerScores()
+    {
+        Globals.SpriteBatch.DrawString(_font, $"Player 1 Score: {_player1Score}", new Vector2(0, 0), Color.White);
+        Globals.SpriteBatch.DrawString(_font, $"Player 2 Score: {_player2Score} ", new Vector2(0, 20), Color.White);
     }
 
 }

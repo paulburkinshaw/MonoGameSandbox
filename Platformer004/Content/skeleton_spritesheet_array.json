@@ -119,7 +119,7 @@
   ],
   "layers": [
    { "name": "Walk", "opacity": 255, "blendMode": "normal" },
-   { "name": "Attack1", "opacity": 255, "blendMode": "normal" }
+   { "name": "Attack1", "opacity": 255, "blendMode": "normal", "cels": [{ "frame": 3, "data": "hit" }] }
   ],
   "slices": [
   ]

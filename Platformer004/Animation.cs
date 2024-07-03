@@ -24,17 +24,6 @@ namespace Platformer004
             AnimationType = animationType;
         }
     }
-    public class AnimationFrameChangedEventArgs : EventArgs
-    {
-        public readonly Animation Animation;
-        public readonly int CurrentFrame;
-
-        public AnimationFrameChangedEventArgs(Animation animation, int currentFrame)
-        {
-            Animation = animation;
-            CurrentFrame = currentFrame;
-        }
-    }
 
     public enum AnimationType
     {
@@ -60,6 +49,8 @@ namespace Platformer004
         public int Duration { get; set; }
         public AnimationType AnimationType { get; set; }
         public string FrameNumber { get; set; }
+
+        public bool Hit { get; set; }
     }
 
     public class Animation
@@ -72,18 +63,19 @@ namespace Platformer004
         private static readonly float _framesPerSecond = 10; //10
         private readonly float _frameDuration = 1 / _framesPerSecond * 1000;
         private float _elapsedGameTimeMs;
-        private bool _active = true;
+        private bool _active = false;
         private RenderTarget2D _animationRenderTarget;
 
         public AnimationType AnimationType => _animationType;
         public List<Frame> Frames => _frames;
         public Texture2D Texture => _texture;
+        public int CurrentFrameNumber => _currentFrame;
+        public bool Active => _active;
 
         public Dictionary<Tuple<AnimationType, int>, Color[,]> ColourData { get; private set; }
 
         public event EventHandler<AnimationStartedEventArgs> AnimationStarted = delegate { };
-        public event EventHandler<AnimationCompleteEventArgs> AnimationComplete = delegate { };
-        public event EventHandler<AnimationFrameChangedEventArgs> AnimationFrameChanged = delegate { };
+        public event EventHandler<AnimationCompleteEventArgs> AnimationComplete = delegate { };   
 
         protected virtual void OnAnimationStarted(AnimationStartedEventArgs args)
         {
@@ -94,12 +86,6 @@ namespace Platformer004
         {
             if (AnimationComplete != null)
                 AnimationComplete(this, args);
-        }
-
-        protected virtual void OnAnimationFrameChanged(AnimationFrameChangedEventArgs args)
-        {
-            if (AnimationFrameChanged != null)
-                AnimationFrameChanged(this, args);
         }
 
         public Animation(Texture2D texture,
@@ -158,9 +144,7 @@ namespace Platformer004
                 {
                     _currentFrame = 0;
                     OnAnimationComplete(new AnimationCompleteEventArgs(AnimationType));
-                }
-
-                OnAnimationFrameChanged(new AnimationFrameChangedEventArgs(this, _currentFrame));
+                }    
 
                 _elapsedGameTimeMs = 0;
             }
@@ -169,7 +153,7 @@ namespace Platformer004
         public void DrawToRenderTarget(Vector2 position)
         {
             Globals.GraphicsDevice.SetRenderTarget(_animationRenderTarget);
-            Globals.GraphicsDevice.Clear(Color.Transparent);      
+            Globals.GraphicsDevice.Clear(Color.Transparent);
             Globals.SpriteBatch.Begin();
             Globals.SpriteBatch.Draw(_texture, position, _frames[_currentFrame].FrameSourceRectangle, Color.White, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
             Globals.SpriteBatch.End();
@@ -180,9 +164,8 @@ namespace Platformer004
         {
             Globals.SpriteBatch.Draw(_animationRenderTarget, new Rectangle(0, 0, Globals.WindowSize.Width, Globals.WindowSize.Height), Color.White);
         }
-
-
     }
 
 
+   
 }

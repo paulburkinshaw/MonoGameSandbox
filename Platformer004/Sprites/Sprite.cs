@@ -32,14 +32,12 @@ public abstract class Sprite
     protected Rectangle _size;
     protected SpriteContent _spriteContent;
     protected AnimationManager _animationManager;
-    protected Animation _currentAnimationz;
-    protected int _currentAnimationFrame;
+    protected Animation _currentAnimation;    
     Vector2 _origin = Vector2.Zero;
     float _rotation = 0;
 
     public Rectangle BoundingBox => GetBoundingBox();
-    public Animation CurrentAnimation => _currentAnimationz;
-    public int CurrentAnimationFrame => _currentAnimationFrame;
+    public Animation CurrentAnimation => _currentAnimation;   
     public Matrix Matrix => GetTranformationMatrix();
 
     public Sprite(Vector2 position,
@@ -54,8 +52,7 @@ public abstract class Sprite
 
         _animationManager.AddAnimations(_spriteContent.AnimationConfig, _spriteContent.Texture);
         animationManager.AnimationStarted += OnAnimationStarted;
-        animationManager.AnimationComplete += OnAnimationComplete;
-        animationManager.AnimationFrameChanged += OnAnimationFrameChanged;
+        animationManager.AnimationComplete += OnAnimationComplete;    
     }
 
     private Matrix GetTranformationMatrix()
@@ -73,16 +70,12 @@ public abstract class Sprite
 
     public virtual void OnAnimationStarted(object sender, AnimationStartedEventArgs args)
     {
-        _currentAnimationz = args.Animation;
+        _currentAnimation = args.Animation;
     }
 
     public virtual void OnAnimationComplete(object sender, AnimationCompleteEventArgs args)
     {
         // _currentAnimation = null;
-    }
-    public virtual void OnAnimationFrameChanged(object sender, AnimationFrameChangedEventArgs args)
-    {
-        _currentAnimationFrame = args.CurrentFrame;
     }
 
     public virtual void MoveX(float movementAmount, Action<CollidesWithTileEventArgs> onCollidesWithTile)

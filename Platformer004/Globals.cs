@@ -17,6 +17,9 @@ public class CollisionData
     public Vector2 PixelCoordinatesB { get; set; }
     public Vector2 ScreenCoordinates {  get; set; }
 
+    public Frame CurrentAnimationFrameA { get; set; }
+    public Frame CurrentAnimationFrameB { get; set; }
+
 }
 
 public static class Globals
@@ -51,11 +54,14 @@ public static class Globals
     }
 
     public static bool SpriteTexturesCollide(PlayableSprite spriteA, PlayableSprite spriteB, CollisionData collisionData = null)
-    {
-        var widthA = spriteA.CurrentAnimation.Frames[spriteA.CurrentAnimationFrame].FrameSourceRectangle.Width;
-        var heightA = spriteA.CurrentAnimation.Frames[spriteA.CurrentAnimationFrame].FrameSourceRectangle.Height;
-        var widthB = spriteB.CurrentAnimation.Frames[spriteB.CurrentAnimationFrame].FrameSourceRectangle.Width;
-        var heightB = spriteB.CurrentAnimation.Frames[spriteB.CurrentAnimationFrame].FrameSourceRectangle.Height;
+    {     
+        var currentFrameNumberA = spriteA.CurrentAnimation.CurrentFrameNumber;
+        var currentFrameNumberB = spriteB.CurrentAnimation.CurrentFrameNumber;
+
+        var widthA = spriteA.CurrentAnimation.Frames[currentFrameNumberA].FrameSourceRectangle.Width;
+        var heightA = spriteA.CurrentAnimation.Frames[currentFrameNumberA].FrameSourceRectangle.Height;
+        var widthB = spriteB.CurrentAnimation.Frames[currentFrameNumberB].FrameSourceRectangle.Width;
+        var heightB = spriteB.CurrentAnimation.Frames[currentFrameNumberB].FrameSourceRectangle.Height;
 
         var matrixAtoB = spriteA.Matrix * Matrix.Invert(spriteB.Matrix);
         var matrixBtoA = spriteB.Matrix * Matrix.Invert(spriteA.Matrix);
@@ -73,8 +79,8 @@ public static class Globals
                 {
                     if (y2 >= 0 && y2 < heightB)
                     {
-                        var colourData1 = spriteA.CurrentAnimation.ColourData[new(spriteA.CurrentAnimation.AnimationType, spriteA.CurrentAnimationFrame)];
-                        var colourData2 = spriteB.CurrentAnimation.ColourData[new(spriteB.CurrentAnimation.AnimationType, spriteB.CurrentAnimationFrame)];
+                        var colourData1 = spriteA.CurrentAnimation.ColourData[new(spriteA.CurrentAnimation.AnimationType, currentFrameNumberA)];
+                        var colourData2 = spriteB.CurrentAnimation.ColourData[new(spriteB.CurrentAnimation.AnimationType, currentFrameNumberB)];
 
                         if (colourData1[x1, y1].A > 0)
                         {
@@ -84,6 +90,8 @@ public static class Globals
                                 {
                                     collisionData.PixelCoordinatesA = pixelCoordinateA;
                                     collisionData.PixelCoordinatesB = pixelCoordinateB;
+                                    collisionData.CurrentAnimationFrameA = spriteA.CurrentAnimation.Frames[currentFrameNumberA];
+                                    collisionData.CurrentAnimationFrameB = spriteB.CurrentAnimation.Frames[currentFrameNumberB];
                                     collisionData.ScreenCoordinates = Vector2.Transform(pixelCoordinateA, spriteA.Matrix);
                                 }
                                                  

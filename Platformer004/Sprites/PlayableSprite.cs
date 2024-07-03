@@ -14,6 +14,8 @@ public class PlayableSprite : Sprite
     private bool _onGround;
     private InputManager _inputManager;
 
+    public bool Attacking => _attacking1 || _attacking2;
+
     public PlayableSprite(Vector2 position,
         Rectangle size,
         SpriteContent spriteContent,

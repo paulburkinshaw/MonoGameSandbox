@@ -15,8 +15,16 @@ public class DebugGameManager
     private PlayableSprite _player2;
     private TileMap _tileMap;
     private bool _colliding = false;
-
+    SpriteFont _font = Globals.Content.Load<SpriteFont>("Font");
     private RenderTarget2D _collisionRenderTarget = new RenderTarget2D(Globals.GraphicsDevice, Globals.InternalSize.Width, Globals.InternalSize.Height);
+    CollisionData _collisionData = new()
+    {
+        ScreenCoordinates = Vector2.Zero,
+        PixelCoordinatesA = Vector2.Zero,
+        PixelCoordinatesB = Vector2.Zero
+    };
+    private int _player1Score;
+    private int _player2Score;
 
     #region debug
     Texture2D _sprite1BoundingBoxTexture;
@@ -29,14 +37,6 @@ public class DebugGameManager
     bool showOverlappingBoundingBox = false;
 
     private RenderTarget2D _boundingBoxRenderTarget = new RenderTarget2D(Globals.GraphicsDevice, Globals.InternalSize.Width, Globals.InternalSize.Height);
-
-    CollisionData _collisionData = new() {
-        ScreenCoordinates = Vector2.Zero,
-        PixelCoordinatesA = Vector2.Zero,
-        PixelCoordinatesB = Vector2.Zero
-    };
-
-    SpriteFont _font = Globals.Content.Load<SpriteFont>("Font");
 
     private List<Component> _components;
     #endregion
@@ -138,8 +138,10 @@ public class DebugGameManager
 
         CheckPlayerCollision();
 
+        UpdatePlayerScores();
+
         #region debug
-        if(showSprite1BoundingBox)
+        if (showSprite1BoundingBox)
             _sprite1BoundingBoxTexture = GetBoundingBoxTexture(_player1.BoundingBox, Color.Red);
 
         if (showSprite2BoundingBox)
@@ -171,6 +173,18 @@ public class DebugGameManager
 
     }
 
+    private void UpdatePlayerScores()
+    {
+        if (_colliding)
+        {
+            if (_player1.Attacking && _collisionData.CurrentAnimationFrameA.Hit)
+                _player1Score += 1;
+
+            if (_player2.Attacking && _collisionData.CurrentAnimationFrameB.Hit)
+                _player2Score += 1;
+        }
+    }
+
     public void Draw()
     {
         _player1.DrawToRenderTarget();
@@ -191,6 +205,7 @@ public class DebugGameManager
         _tileMap.Draw();
         _player1.Draw();
         _player2.Draw();
+        DrawPlayerScores();
 
         #region debug
         if (_boundingBoxRenderTarget != null)
@@ -213,6 +228,12 @@ public class DebugGameManager
         Globals.SpriteBatch.Draw(new Texture2D(Globals.GraphicsDevice, 1, 1), new Vector2(0, 0), Color.White);
         Globals.SpriteBatch.End();
         Globals.GraphicsDevice.SetRenderTarget(null);
+    }
+
+    private void DrawPlayerScores()
+    {
+        Globals.SpriteBatch.DrawString(_font, $"Player 1 Score: {_player1Score}", new Vector2(0, 180), Color.White);
+        Globals.SpriteBatch.DrawString(_font, $"Player 2 Score: {_player2Score} ", new Vector2(0, 200), Color.White);
     }
 
     #region debug
