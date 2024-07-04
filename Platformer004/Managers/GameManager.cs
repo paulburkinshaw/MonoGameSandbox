@@ -23,6 +23,7 @@ public class GameManager
     };
     private int _player1Score;
     private int _player2Score;
+    private float _elapsedGameTimeMs;
 
     public GameManager()
     {
@@ -118,13 +119,22 @@ public class GameManager
     }
     private void UpdatePlayerScores()
     {
+        _elapsedGameTimeMs += Globals.ElapsedGameTimeMs;
+
         if (_colliding)
         {
-            if (_player1.Attacking && _collisionData.CurrentAnimationFrameA.Hit)
-                _player1Score += 1;
-
-            if (_player2.Attacking && _collisionData.CurrentAnimationFrameB.Hit)
-                _player2Score += 1;
+            if (_elapsedGameTimeMs >= Globals.Physics.Frameduration)
+            {
+                if (_collisionData.CurrentAnimationFrameA.Hit)
+                {
+                    _player1Score += 1;
+                }
+                if (_collisionData.CurrentAnimationFrameB.Hit)
+                {
+                    _player2Score += 1;
+                }
+                _elapsedGameTimeMs = 0;
+            }
         }
     }
 

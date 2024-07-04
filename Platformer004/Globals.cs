@@ -8,7 +8,9 @@ namespace Platformer004;
 
 public class Physics
 {
-    public float GRAVITY => 1000;
+    public float Gravity => 1000;
+    public static float FramesPerSecond = 10;
+    public float Frameduration = 1 / FramesPerSecond * 1000;
 } 
 
 public class CollisionData
@@ -16,7 +18,6 @@ public class CollisionData
     public Vector2 PixelCoordinatesA { get; set; }
     public Vector2 PixelCoordinatesB { get; set; }
     public Vector2 ScreenCoordinates {  get; set; }
-
     public Frame CurrentAnimationFrameA { get; set; }
     public Frame CurrentAnimationFrameB { get; set; }
 
@@ -89,7 +90,7 @@ public static class Globals
                                 if (collisionData != null)
                                 {
                                     collisionData.PixelCoordinatesA = pixelCoordinateA;
-                                    collisionData.PixelCoordinatesB = pixelCoordinateB;
+                                    collisionData.PixelCoordinatesB = pixelCoordinateB;       
                                     collisionData.CurrentAnimationFrameA = spriteA.CurrentAnimation.Frames[currentFrameNumberA];
                                     collisionData.CurrentAnimationFrameB = spriteB.CurrentAnimation.Frames[currentFrameNumberB];
                                     collisionData.ScreenCoordinates = Vector2.Transform(pixelCoordinateA, spriteA.Matrix);

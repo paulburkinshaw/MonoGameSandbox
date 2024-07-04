@@ -60,8 +60,6 @@ namespace Platformer004
         private readonly int _frameCount;
         private readonly List<Frame> _frames;
         private int _currentFrame;
-        private static readonly float _framesPerSecond = 10; //10
-        private readonly float _frameDuration = 1 / _framesPerSecond * 1000;
         private float _elapsedGameTimeMs;
         private bool _active = false;
         private RenderTarget2D _animationRenderTarget;
@@ -136,7 +134,7 @@ namespace Platformer004
 
             _elapsedGameTimeMs += Globals.ElapsedGameTimeMs;
 
-            if (_elapsedGameTimeMs >= _frameDuration)
+            if (_elapsedGameTimeMs >= Globals.Physics.Frameduration)
             {
                 _currentFrame++;
 

@@ -69,7 +69,7 @@ public class PlayableSprite : Sprite
             _velocity.X = 0;
         }
 
-        _velocity.Y += Globals.Physics.GRAVITY * Globals.ElapsedGameTimeSeconds;
+        _velocity.Y += Globals.Physics.Gravity * Globals.ElapsedGameTimeSeconds;
 
         if (_jumping && _onGround)
         {
