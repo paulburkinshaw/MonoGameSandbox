@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Platformer004.Sprites;
 using System.IO;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Platformer004.Managers;
 

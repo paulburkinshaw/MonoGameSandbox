@@ -74,10 +74,12 @@ public class AnimationManager
                 _currentAnimation.Reset();
             }
 
-            animation.Start();
-
-            _currentKey = key;
-            _currentAnimation = animation;
+            if (!animation.Active)
+            {
+                animation.Start();
+                _currentKey = key;
+                _currentAnimation = animation;
+            }
 
             animation.Update();
         }
@@ -87,10 +89,12 @@ public class AnimationManager
             _animationDictionary[_currentKey.Value].Reset();
         }
     }
+
     public void DrawToRenderTarget(Vector2 position)
     {
         _animationDictionary[_currentKey.Value].DrawToRenderTarget(position);
     }
+
     public void Draw()
     {
         _animationDictionary[_currentKey.Value].Draw();

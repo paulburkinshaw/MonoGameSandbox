@@ -8,6 +8,7 @@ public class PlayableSprite: Sprite
     private const float JUMP = 200f;
     private float _speed => GetSpeed();  
     private Vector2 _velocity;
+    private bool _jumpKeyPressed = false;
     private bool _jumping = false;
     private bool _attacking1 = false;
     private bool _attacking2 = false;
@@ -33,6 +34,7 @@ public class PlayableSprite: Sprite
 
     void OnJumpKeyPressed(object sender, EventArgs args)
     {
+        _jumpKeyPressed = true;
         _jumping = true;
     }
     void OnAttack1KeyPressed(object sender, EventArgs args)
@@ -85,10 +87,10 @@ public class PlayableSprite: Sprite
 
         _velocity.Y += Globals.Physics.GRAVITY * Globals.ElapsedGameTimeSeconds;
 
-        if (_jumping && _onGround)
+        if (_jumpKeyPressed && _onGround)
         {
             _velocity.Y = -JUMP;
-            _jumping = false;
+            _jumpKeyPressed = false;
         }
     }
 

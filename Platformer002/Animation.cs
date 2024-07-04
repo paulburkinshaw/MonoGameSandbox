@@ -52,9 +52,10 @@ namespace Platformer002
         private static readonly float _framesPerSecond = 10; //10
         private readonly float _frameDuration = 1 / _framesPerSecond * 1000;
         private float _elapsedGameTimeMs;
-        private bool _active = true;
+        private bool _active = false;
         private RenderTarget2D _animationRenderTarget;
 
+        public bool Active => _active;
         public static event EventHandler<AnimationCompleteEventArgs> AnimationComplete = delegate { };
 
         protected virtual void OnAnimationComplete(AnimationCompleteEventArgs args)

@@ -73,10 +73,12 @@ public class AnimationManager
                 _currentAnimation.Reset();
             }
 
-            animation.Start();
-
-            _currentKey = key;
-            _currentAnimation = animation;
+            if (!animation.Active)
+            {
+                animation.Start();
+                _currentKey = key;
+                _currentAnimation = animation;
+            }
 
             animation.Update();
         }

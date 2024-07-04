@@ -2,7 +2,9 @@
 
 This tutorial builds on Platformer001 and adds gravity when jumping and collision detection (the sprite colliding against the floor when landing from a jump)
 
-You don't need to have completed Platformer001 to follow this tutorial but it would be helpful if you are not familiar with spritesheet animations or basic movement via the keyboard in MonoGame as Platformer001 goes into more detail on these topics.
+You don't need to have completed Platformer001 to follow this tutorial but if you are not familiar with spritesheet animations or basic movement via the keyboard in MonoGame have a look at Platformer001 as it goes into more detail on these topics.
+
+
 
 ---
 ### Controls:

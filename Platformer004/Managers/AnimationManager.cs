@@ -24,7 +24,6 @@ public class AnimationManager
     }
     void OnAnimationStarted(object sender, AnimationStartedEventArgs args)
     {
-        //_currentAnimation = args.Animation;
         if (AnimationStarted != null)
             AnimationStarted(this, args);
     }
@@ -100,10 +99,12 @@ public class AnimationManager
             _animationDictionary[_currentKey.Value].Reset();
         }
     }
+
     public void DrawToRenderTarget(Vector2 position)
     {
         _animationDictionary[_currentKey.Value].DrawToRenderTarget(position);
     }
+    
     public void Draw()
     {
         _animationDictionary[_currentKey.Value].Draw();
