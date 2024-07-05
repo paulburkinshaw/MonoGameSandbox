@@ -17,7 +17,7 @@ public class AnimationManager
 
     public event EventHandler<AnimationStartedEventArgs> AnimationStarted = delegate { };
     public event EventHandler<AnimationCompleteEventArgs> AnimationComplete = delegate { };
-   
+
     public AnimationManager()
     {
 
@@ -37,7 +37,7 @@ public class AnimationManager
     {
         animation.AnimationStarted += OnAnimationStarted;
         animation.AnimationComplete += OnAnimationComplete;
-     
+
         _animationDictionary.Add(key, animation);
         _currentKey ??= key;
         _currentAnimation ??= animation;
@@ -69,6 +69,7 @@ public class AnimationManager
             .Select(g => new Animation(texture: texture,
                                        animationType: g.Key,
                                        frames: g.ToList(),
+                                       runOnce: g.ToArray()[0].RunOnce,
                                        frameCount: g.Count(),
                                        animationRenderTarget: _animationRenderTarget)
             );
@@ -90,8 +91,9 @@ public class AnimationManager
                 _currentKey = key;
                 _currentAnimation = animation;
             }
-            
+
             animation.Update();
+
         }
         else
         {
@@ -104,12 +106,10 @@ public class AnimationManager
     {
         _animationDictionary[_currentKey.Value].DrawToRenderTarget(position);
     }
-    
+
     public void Draw()
     {
         _animationDictionary[_currentKey.Value].Draw();
     }
-
-
 
 }

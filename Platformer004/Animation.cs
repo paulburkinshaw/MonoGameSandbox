@@ -49,8 +49,8 @@ namespace Platformer004
         public int Duration { get; set; }
         public AnimationType AnimationType { get; set; }
         public string FrameNumber { get; set; }
-
         public bool Hit { get; set; }
+        public bool RunOnce { get; set; }
     }
 
     public class Animation
@@ -69,11 +69,12 @@ namespace Platformer004
         public Texture2D Texture => _texture;
         public int CurrentFrameNumber => _currentFrame;
         public bool Active => _active;
+        public bool _runOnce;
 
         public Dictionary<Tuple<AnimationType, int>, Color[,]> ColourData { get; private set; }
 
         public event EventHandler<AnimationStartedEventArgs> AnimationStarted = delegate { };
-        public event EventHandler<AnimationCompleteEventArgs> AnimationComplete = delegate { };   
+        public event EventHandler<AnimationCompleteEventArgs> AnimationComplete = delegate { };
 
         protected virtual void OnAnimationStarted(AnimationStartedEventArgs args)
         {
@@ -89,12 +90,14 @@ namespace Platformer004
         public Animation(Texture2D texture,
             AnimationType animationType,
             List<Frame> frames,
+            bool runOnce,
             int frameCount,
             RenderTarget2D animationRenderTarget)
         {
             _texture = texture;
             _animationType = animationType;
             _frames = frames;
+            _runOnce = runOnce;
             _frameCount = frameCount;
             _animationRenderTarget = animationRenderTarget;
 
@@ -140,12 +143,17 @@ namespace Platformer004
 
                 if (_currentFrame == _frameCount)
                 {
-                    _currentFrame = 0;
                     OnAnimationComplete(new AnimationCompleteEventArgs(AnimationType));
-                }    
+
+                    if (!_runOnce)
+                        _currentFrame = 0;
+                    else
+                        _currentFrame = _frameCount - 1;
+                }
 
                 _elapsedGameTimeMs = 0;
             }
+
         }
 
         public void DrawToRenderTarget(Vector2 position)
@@ -165,5 +173,5 @@ namespace Platformer004
     }
 
 
-   
+
 }

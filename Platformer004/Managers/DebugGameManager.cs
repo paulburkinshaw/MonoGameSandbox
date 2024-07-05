@@ -6,6 +6,7 @@ using Platformer004.Sprites;
 using System.IO;
 using Platformer004.Controls;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Platformer004.Managers;
 
@@ -14,7 +15,7 @@ public class DebugGameManager
     private PlayableSprite _player1;
     private PlayableSprite _player2;
     private TileMap _tileMap;
-    private bool _colliding = false;
+    private bool _playerHit = false;
     SpriteFont _font = Globals.Content.Load<SpriteFont>("Font");
     private RenderTarget2D _collisionRenderTarget = new RenderTarget2D(Globals.GraphicsDevice, Globals.InternalSize.Width, Globals.InternalSize.Height);
     CollisionData _collisionData = new()
@@ -23,8 +24,8 @@ public class DebugGameManager
         PixelCoordinatesA = Vector2.Zero,
         PixelCoordinatesB = Vector2.Zero
     };
-    private int _player1Score;
-    private int _player2Score;
+    private int _player1Health = 100;
+    private int _player2Health = 100;
     private float _elapsedGameTimeMs;
 
     #region debug
@@ -80,7 +81,7 @@ public class DebugGameManager
         var spriteContent = new SpriteContent
         {
             Texture = Globals.Content.Load<Texture2D>("knight_spritesheet"),
-            AnimationConfig = File.ReadAllText(@"Content\knight_spritesheet_array.json")
+            AnimationConfig = File.ReadAllText(@"Content\knight_spritesheet.json")
         };
 
         var animationManager = new AnimationManager();
@@ -110,7 +111,7 @@ public class DebugGameManager
         var spriteContent2 = new SpriteContent
         {
             Texture = Globals.Content.Load<Texture2D>("skeleton_spritesheet"),
-            AnimationConfig = File.ReadAllText(@"Content\skeleton_spritesheet_array.json")
+            AnimationConfig = File.ReadAllText(@"Content\skeleton_spritesheet.json")
         };
 
         var animationManager2 = new AnimationManager();
@@ -139,8 +140,6 @@ public class DebugGameManager
 
         CheckPlayerCollision();
 
-        UpdatePlayerScores();
-
         #region debug
         if (showSprite1BoundingBox)
             _sprite1BoundingBoxTexture = GetBoundingBoxTexture(_player1.BoundingBox, Color.Red);
@@ -159,38 +158,26 @@ public class DebugGameManager
 
     private void CheckPlayerCollision()
     {
-
-        _colliding = false;
+        _playerHit = false;
 
         if (_player1.BoundingBox.Intersects(_player2.BoundingBox))
         {
             var texturesCollide = Globals.SpriteTexturesCollide(_player1, _player2, _collisionData);
 
             if (texturesCollide)
-            {
-                _colliding = true;
-            }
-        }
-
-    }
-
-    private void UpdatePlayerScores()
-    {
-        _elapsedGameTimeMs += Globals.ElapsedGameTimeMs;
-       
-        if (_colliding)
-        {
-            if (_elapsedGameTimeMs >= Globals.Physics.Frameduration)
-            {
+            {        
                 if (_collisionData.CurrentAnimationFrameA.Hit)
-                {
-                    _player1Score += 1;
+                {                    
+                    _playerHit = true;                  
+                    _player2.OnHit();
+                    _player2Health -= 1;
                 }
                 if (_collisionData.CurrentAnimationFrameB.Hit)
-                {
-                    _player2Score += 1;
+                {                   
+                    _playerHit = true;               
+                    _player1.OnHit();
+                    _player1Health -= 1;
                 }
-                _elapsedGameTimeMs = 0;
             }
         }
     }
@@ -200,7 +187,7 @@ public class DebugGameManager
         _player1.DrawToRenderTarget();
         _player2.DrawToRenderTarget();
 
-        if (_colliding)
+        if (_playerHit)
             DrawCollisionTextureToRenderTarget();
 
         #region debug
@@ -209,7 +196,7 @@ public class DebugGameManager
 
         Globals.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
 
-        if (_colliding)
+        if (_playerHit)
             Globals.SpriteBatch.Draw(_collisionRenderTarget, new Rectangle(0, 0, Globals.WindowSize.Width, Globals.WindowSize.Height), Color.White);
 
         _tileMap.Draw();
@@ -242,8 +229,8 @@ public class DebugGameManager
 
     private void DrawPlayerScores()
     {
-        Globals.SpriteBatch.DrawString(_font, $"Player 1 Score: {_player1Score}", new Vector2(0, 180), Color.White);
-        Globals.SpriteBatch.DrawString(_font, $"Player 2 Score: {_player2Score} ", new Vector2(0, 200), Color.White);
+        Globals.SpriteBatch.DrawString(_font, $"Player 1 Health: {_player1Health}", new Vector2(0, 180), Color.White);
+        Globals.SpriteBatch.DrawString(_font, $"Player 2 Health: {_player2Health} ", new Vector2(0, 200), Color.White);
     }
 
     #region debug
@@ -287,7 +274,7 @@ public class DebugGameManager
 
     private void DrawDebugValues()
     {
-        Globals.SpriteBatch.DrawString(_font, $"Collision: {_colliding}", new Vector2(0, 00), Color.White);
+        Globals.SpriteBatch.DrawString(_font, $"Player hit: {_playerHit}", new Vector2(0, 00), Color.White);
         Globals.SpriteBatch.DrawString(_font, $"Collision Screen Coordinates: {_collisionData.ScreenCoordinates.X}, {_collisionData.ScreenCoordinates.Y} ", new Vector2(0, 20), Color.White);
         Globals.SpriteBatch.DrawString(_font, $"Collision Texture Pixel Coordinates A: {_collisionData.PixelCoordinatesA.X}, {_collisionData.PixelCoordinatesA.Y} ", new Vector2(0, 40), Color.White);
         Globals.SpriteBatch.DrawString(_font, $"Collision Texture Pixel Coordinates B: {_collisionData.PixelCoordinatesB.X}, {_collisionData.PixelCoordinatesB.Y} ", new Vector2(0, 60), Color.White);

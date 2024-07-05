@@ -47,7 +47,7 @@ namespace Platformer004
                
             foreach ( var frame in frames)
             {          
-                var frameHit = (layers.Where(layer => layer.Name == frame.AnimationType.ToString() 
+                var frameHit = (layers.Where(layer => GetLayerName(layer.Name ) == frame.AnimationType.ToString() 
                                        && layer.Cells?.Where(cell => cell.FrameNumber == frame.FrameNumber && cell.Data == "hit").Count() > 0)
                                ).Any();
 
@@ -61,6 +61,13 @@ namespace Platformer004
             return spritesheetData;
         }
 
+        private string GetLayerName(string fileName)
+        {
+            var filenameParts = (fileName.Split(','));
+
+            return filenameParts[0];
+        }
+
         public override void WriteJson(JsonWriter writer, SpritesheetData value, JsonSerializer serializer)
         {
             throw new NotImplementedException("Writing JSON is not implemented for SpritesheetDataConverter");
@@ -69,6 +76,8 @@ namespace Platformer004
 
     public class AnimationFrameConverter : JsonConverter<Frame>
     {
+        static string runonce;
+
         public override Frame ReadJson(JsonReader reader, Type objectType, Frame existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
             JObject jsonObject = JObject.Load(reader);
@@ -101,10 +110,11 @@ namespace Platformer004
 
             var filenameParts = ((string)jsonObject["filename"]).Split(',');
 
-            if (filenameParts.Length == 2)
+            if (filenameParts.Length == 3)
             {
                 spriteFrame.AnimationType = ConvertAnimationNameToEnum(filenameParts[0]);
-                spriteFrame.FrameNumber = filenameParts[1];
+                spriteFrame.RunOnce = filenameParts[1] == nameof(runonce) ? true : false;
+                spriteFrame.FrameNumber = filenameParts[2];
             }
 
             return spriteFrame;

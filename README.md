@@ -2,7 +2,7 @@
 - [MonoGameSandbox](#monogamesandbox)
 - [Projects](#projects)
   - [Platformer001](#platformer001)
-  - [Platformer002](#platformer002)
+  - [Platformer002 - Gravity and AABB Collision Detection](#platformer002---gravity-and-aabb-collision-detection)
   - [Platformer003](#platformer003)
   - [Platformer004](#platformer004)
 - [MonoGame](#monogame)
@@ -41,7 +41,7 @@
 ## Platformer001
 TODO: add info for Platformer001
 
-## Platformer002
+## Platformer002 - Gravity and AABB Collision Detection
 TODO: add info for Platformer002
 
 ## Platformer003

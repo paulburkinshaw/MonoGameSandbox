@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Platformer004.Sprites;
+using System.Diagnostics;
 using System.IO;
 
 namespace Platformer004.Managers;
@@ -11,7 +12,7 @@ public class GameManager
     private PlayableSprite _player1;
     private PlayableSprite _player2;
     private TileMap _tileMap;
-    private bool _colliding = false;
+    private bool _playerHit = false;
     SpriteFont _font = Globals.Content.Load<SpriteFont>("Font");
     private RenderTarget2D _collisionRenderTarget = new RenderTarget2D(Globals.GraphicsDevice, Globals.InternalSize.Width, Globals.InternalSize.Height);
     CollisionData _collisionData = new()
@@ -20,8 +21,8 @@ public class GameManager
         PixelCoordinatesA = Vector2.Zero,
         PixelCoordinatesB = Vector2.Zero
     };
-    private int _player1Score;
-    private int _player2Score;
+    private int _player1Health = 100;
+    private int _player2Health = 100;
     private float _elapsedGameTimeMs;
 
     public GameManager()
@@ -39,7 +40,7 @@ public class GameManager
         var spriteContent = new SpriteContent
         {
             Texture = Globals.Content.Load<Texture2D>("knight_spritesheet"),
-            AnimationConfig = File.ReadAllText(@"Content\knight_spritesheet_array.json")
+            AnimationConfig = File.ReadAllText(@"Content\knight_spritesheet.json")
         };
 
         var animationManager = new AnimationManager();
@@ -69,7 +70,7 @@ public class GameManager
         var spriteContent2 = new SpriteContent
         {
             Texture = Globals.Content.Load<Texture2D>("skeleton_spritesheet"),
-            AnimationConfig = File.ReadAllText(@"Content\skeleton_spritesheet_array.json")
+            AnimationConfig = File.ReadAllText(@"Content\skeleton_spritesheet.json")
         };
 
         var animationManager2 = new AnimationManager();
@@ -97,13 +98,11 @@ public class GameManager
         _player2.Update();
 
         CheckPlayerCollision();
-
-        UpdatePlayerScores();
     }
 
     private void CheckPlayerCollision()
     {
-        _colliding = false;
+        _playerHit = false;
 
         if (_player1.BoundingBox.Intersects(_player2.BoundingBox))
         {
@@ -111,28 +110,19 @@ public class GameManager
 
             if (texturesCollide)
             {
-                _colliding = true;            
-            }
-
-        }
-    }
-    private void UpdatePlayerScores()
-    {
-        _elapsedGameTimeMs += Globals.ElapsedGameTimeMs;
-
-        if (_colliding)
-        {
-            if (_elapsedGameTimeMs >= Globals.Physics.Frameduration)
-            {
                 if (_collisionData.CurrentAnimationFrameA.Hit)
-                {
-                    _player1Score += 1;
+                {                  
+                    _playerHit = true;
+                    _player2.OnHit();
+                    _player2Health -= 1;
                 }
                 if (_collisionData.CurrentAnimationFrameB.Hit)
                 {
-                    _player2Score += 1;
+                     _playerHit = true;
+                    _player1.OnHit();
+                    _player1Health -= 1;
                 }
-                _elapsedGameTimeMs = 0;
+
             }
         }
     }
@@ -142,12 +132,12 @@ public class GameManager
         _player1.DrawToRenderTarget();
         _player2.DrawToRenderTarget();
 
-        if (_colliding)
+        if (_playerHit)
             DrawCollisionTextureToRenderTarget();
 
         Globals.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
 
-        if (_colliding)
+        if (_playerHit)
             Globals.SpriteBatch.Draw(_collisionRenderTarget, new Rectangle(0, 0, Globals.WindowSize.Width, Globals.WindowSize.Height), Color.White);
 
         _tileMap.Draw();
@@ -170,8 +160,8 @@ public class GameManager
 
     private void DrawPlayerScores()
     {
-        Globals.SpriteBatch.DrawString(_font, $"Player 1 Score: {_player1Score}", new Vector2(0, 0), Color.White);
-        Globals.SpriteBatch.DrawString(_font, $"Player 2 Score: {_player2Score} ", new Vector2(0, 20), Color.White);
+        Globals.SpriteBatch.DrawString(_font, $"Player 1 Health: {_player1Health}", new Vector2(0, 0), Color.White);
+        Globals.SpriteBatch.DrawString(_font, $"Player 2 Health: {_player2Health} ", new Vector2(0, 20), Color.White);
     }
 
 }

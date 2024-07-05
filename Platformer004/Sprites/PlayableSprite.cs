@@ -12,6 +12,8 @@ public class PlayableSprite : Sprite
     private bool _jumping = false;
     private bool _attacking1 = false;
     private bool _attacking2 = false;
+    private bool _falling = false;
+    private bool _standing = false;
     private bool _onGround;
     private InputManager _inputManager;
 
@@ -46,6 +48,14 @@ public class PlayableSprite : Sprite
     void OnAttack2KeyPressed(object sender, EventArgs args)
     {
         _attacking2 = true;
+    }
+    public void OnHit()
+    {
+        _falling = true;
+    }
+    public void OnStand()
+    {
+        _standing = true;
     }
 
     public override void Update()
@@ -124,6 +134,14 @@ public class PlayableSprite : Sprite
         {
             _animationManager.Update(AnimationType.Jump);
         }
+        else if (_inputManager.Moving && _falling || _falling)
+        {
+            _animationManager.Update(AnimationType.Fall);
+        }
+        else if (_inputManager.Moving && _standing || _standing)
+        {
+            _animationManager.Update(AnimationType.Standup);
+        }
         else if (_inputManager.Moving && _inputManager.Running)
         {
             _animationManager.Update(AnimationType.Run);
@@ -144,7 +162,7 @@ public class PlayableSprite : Sprite
         {
             _animationManager.Update(AnimationType.Ready);
         }
-      
+
     }
 
     public override void OnAnimationComplete(object sender, AnimationCompleteEventArgs args)
@@ -152,6 +170,15 @@ public class PlayableSprite : Sprite
         if (args.AnimationType == AnimationType.Jump)
         {
             _jumping = false;
+        }
+        if (args.AnimationType == AnimationType.Fall)
+        {
+            _falling = false;
+            OnStand();
+        }
+        if (args.AnimationType == AnimationType.Standup)
+        {
+            _standing = false;
         }
         if (args.AnimationType == AnimationType.Attack1)
         {

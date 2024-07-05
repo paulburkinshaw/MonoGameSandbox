@@ -25,10 +25,10 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Content\knight_spritesheet_array.json">
+    <None Update="Content\knight_spritesheet.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Content\skeleton_spritesheet_array.json">
+    <None Update="Content\skeleton_spritesheet.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
