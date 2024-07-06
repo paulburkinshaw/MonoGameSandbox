@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Platformer004.Controls
+namespace Platformer005.Controls
 {
   public abstract class Component
   {

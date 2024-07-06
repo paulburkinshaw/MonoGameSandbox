@@ -1,15 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Platformer004.Managers;
+using Platformer005.Managers;
 using System;
 
-namespace Platformer004;
+namespace Platformer005;
 
 public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
     private GameManager _gameManager;
+
+#if DEBUG
+    private DebugGameManager _debugGameManager;
+#endif
 
     public Game1()
     {
@@ -46,7 +50,13 @@ public class Game1 : Game
     {
         Globals.SpriteBatch = new SpriteBatch(GraphicsDevice);
         Globals.GraphicsDevice = GraphicsDevice;
+
+#if DEBUG
+        _debugGameManager = new();
+#else
         _gameManager = new();
+#endif
+
     }
 
     protected override void Update(GameTime gameTime)
@@ -55,13 +65,26 @@ public class Game1 : Game
             Exit();
 
         Globals.Update(gameTime);
+
+#if DEBUG
+        _debugGameManager.Update();
+#else
         _gameManager.Update();
+#endif
+
         base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
     {
+
+
+#if DEBUG
+        _debugGameManager.Draw();
+#else
         _gameManager.Draw();
+#endif
+
         base.Draw(gameTime);
     }
 

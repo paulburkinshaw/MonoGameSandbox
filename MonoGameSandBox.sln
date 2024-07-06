@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Platformer003", "Platformer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Platformer004", "Platformer004\Platformer004.csproj", "{937B1792-35D1-4183-9ACC-EAA23DE1CD38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectXProject", "DirectXProject\DirectXProject.csproj", "{BE3CCBFD-E2EB-407E-89BC-B545590C13E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DirectXProject", "DirectXProject\DirectXProject.csproj", "{BE3CCBFD-E2EB-407E-89BC-B545590C13E0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Platformer005", "Platformer005\Platformer005.csproj", "{EBD1BEA0-894F-4F90-82BE-2A50B08DCFDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +52,12 @@ Global
 		{BE3CCBFD-E2EB-407E-89BC-B545590C13E0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BE3CCBFD-E2EB-407E-89BC-B545590C13E0}.Test|Any CPU.ActiveCfg = Debug|Any CPU
 		{BE3CCBFD-E2EB-407E-89BC-B545590C13E0}.Test|Any CPU.Build.0 = Debug|Any CPU
+		{EBD1BEA0-894F-4F90-82BE-2A50B08DCFDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBD1BEA0-894F-4F90-82BE-2A50B08DCFDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBD1BEA0-894F-4F90-82BE-2A50B08DCFDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBD1BEA0-894F-4F90-82BE-2A50B08DCFDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBD1BEA0-894F-4F90-82BE-2A50B08DCFDE}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{EBD1BEA0-894F-4F90-82BE-2A50B08DCFDE}.Test|Any CPU.Build.0 = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

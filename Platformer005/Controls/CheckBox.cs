@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Platformer004.Controls
+namespace Platformer005.Controls
 {
-    public class Button : Component
+    public class CheckBox : Component
     {
         #region Fields
 
@@ -17,8 +17,8 @@ namespace Platformer004.Controls
 
         private MouseState _previousMouse;
 
-        private Texture2D _textureOff;
-        private Texture2D _textureOn;
+        private Texture2D _textureUnchecked;
+        private Texture2D _textureChecked;
 
         private bool onOffState = false;
 
@@ -39,9 +39,9 @@ namespace Platformer004.Controls
             get
             {
                 if (!onOffState)
-                    return new Rectangle((int)Position.X, (int)Position.Y, _textureOff.Width, _textureOff.Height);
+                    return new Rectangle((int)Position.X, (int)Position.Y, _textureUnchecked.Width, _textureUnchecked.Height);
                 else
-                    return new Rectangle((int)Position.X, (int)Position.Y, _textureOn.Width, _textureOn.Height);
+                    return new Rectangle((int)Position.X, (int)Position.Y, _textureChecked.Width, _textureChecked.Height);
             } 
     }
 
@@ -51,10 +51,10 @@ namespace Platformer004.Controls
 
         #region Methods
 
-        public Button(Texture2D textureOff, Texture2D textureOn, SpriteFont font)
+        public CheckBox(Texture2D textureUnchecked, Texture2D textureChecked, SpriteFont font)
         {
-            _textureOff = textureOff;
-            _textureOn = textureOn;
+            _textureUnchecked = textureUnchecked;
+            _textureChecked = textureChecked;
             _font = font;
             PenColour = Color.White ;
         }
@@ -67,13 +67,13 @@ namespace Platformer004.Controls
                 colour = Color.Gray;
 
             if(!onOffState)
-                Globals.SpriteBatch.Draw(_textureOff, Rectangle, colour);
+                Globals.SpriteBatch.Draw(_textureUnchecked, Rectangle, colour);
             else
-                Globals.SpriteBatch.Draw(_textureOn, Rectangle, colour);
+                Globals.SpriteBatch.Draw(_textureChecked, Rectangle, colour);
 
             if (!string.IsNullOrEmpty(Text))
             {
-                var x = (Rectangle.X + (Rectangle.Width / 2)) - (_font.MeasureString(Text).X / 2);
+                var x = (Rectangle.X + (Rectangle.Width) + 5);
                 var y = (Rectangle.Y + (Rectangle.Height / 2)) - (_font.MeasureString(Text).Y / 2);
 
                 Globals.SpriteBatch.DrawString(_font, Text, new Vector2(x, y), PenColour);

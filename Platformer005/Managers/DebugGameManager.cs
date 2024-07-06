@@ -2,13 +2,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using Platformer004.Sprites;
+using Platformer005.Sprites;
 using System.IO;
-using Platformer004.Controls;
+using Platformer005.Controls;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Platformer004.Managers;
+namespace Platformer005.Managers;
 
 public class DebugGameManager
 {

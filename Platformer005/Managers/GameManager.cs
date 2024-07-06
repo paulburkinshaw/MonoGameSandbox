@@ -1,23 +1,29 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Platformer004.Sprites;
+using Platformer005.Sprites;
 using System.Diagnostics;
 using System.IO;
 
-namespace Platformer004.Managers;
+namespace Platformer005.Managers;
 
 public class GameManager
 {
     private PlayableSprite _player1;
     private PlayableSprite _player2;
     private TileMap _tileMap;
+    private bool _playerHit = false;
+    SpriteFont _font = Globals.Content.Load<SpriteFont>("Font");
+    private RenderTarget2D _collisionRenderTarget = new RenderTarget2D(Globals.GraphicsDevice, Globals.InternalSize.Width, Globals.InternalSize.Height);
     CollisionData _collisionData = new()
     {
         ScreenCoordinates = Vector2.Zero,
         PixelCoordinatesA = Vector2.Zero,
         PixelCoordinatesB = Vector2.Zero
     };
+    private int _player1Health = 100;
+    private int _player2Health = 100;
+    private float _elapsedGameTimeMs;
 
     public GameManager()
     {
@@ -96,6 +102,8 @@ public class GameManager
 
     private void CheckPlayerCollision()
     {
+        _playerHit = false;
+
         if (_player1.BoundingBox.Intersects(_player2.BoundingBox))
         {
             var texturesCollide = Globals.SpriteTexturesCollide(_player1, _player2, _collisionData);
@@ -103,12 +111,16 @@ public class GameManager
             if (texturesCollide)
             {
                 if (_collisionData.CurrentAnimationFrameA.Hit)
-                {                                    
-                    _player2.OnHit();                 
+                {                  
+                    _playerHit = true;
+                    _player2.OnHit();
+                    _player2Health -= 1;
                 }
                 if (_collisionData.CurrentAnimationFrameB.Hit)
-                {                  
-                    _player1.OnHit();                   
+                {
+                     _playerHit = true;
+                    _player1.OnHit();
+                    _player1Health -= 1;
                 }
 
             }
@@ -120,13 +132,36 @@ public class GameManager
         _player1.DrawToRenderTarget();
         _player2.DrawToRenderTarget();
 
+        if (_playerHit)
+            DrawCollisionTextureToRenderTarget();
+
         Globals.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
+
+        if (_playerHit)
+            Globals.SpriteBatch.Draw(_collisionRenderTarget, new Rectangle(0, 0, Globals.WindowSize.Width, Globals.WindowSize.Height), Color.White);
 
         _tileMap.Draw();
         _player1.Draw();
         _player2.Draw();
+        DrawPlayerScores();
 
         Globals.SpriteBatch.End();
+    }
+
+    private void DrawCollisionTextureToRenderTarget()
+    {
+        Globals.GraphicsDevice.SetRenderTarget(_collisionRenderTarget);
+        Globals.GraphicsDevice.Clear(Color.Red);
+        Globals.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
+        Globals.SpriteBatch.Draw(new Texture2D(Globals.GraphicsDevice, 1,1), new Vector2(0, 0), Color.White);
+        Globals.SpriteBatch.End();
+        Globals.GraphicsDevice.SetRenderTarget(null);
+    }
+
+    private void DrawPlayerScores()
+    {
+        Globals.SpriteBatch.DrawString(_font, $"Player 1 Health: {_player1Health}", new Vector2(0, 0), Color.White);
+        Globals.SpriteBatch.DrawString(_font, $"Player 2 Health: {_player2Health} ", new Vector2(0, 20), Color.White);
     }
 
 }
