@@ -6,7 +6,6 @@ using Platformer005.Sprites;
 using System.IO;
 using Platformer005.Controls;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Platformer005.Managers;
 
@@ -24,9 +23,14 @@ public class DebugGameManager
         PixelCoordinatesA = Vector2.Zero,
         PixelCoordinatesB = Vector2.Zero
     };
-    private int _player1Health = 100;
-    private int _player2Health = 100;
-    private float _elapsedGameTimeMs;
+
+    public event EventHandler<PlayerHitEventArgs> PlayerHit = delegate { };
+
+    protected virtual void OnPlayerHit(PlayerHitEventArgs args)
+    {
+        if (PlayerHit != null)
+            PlayerHit(this, args);
+    }
 
     #region debug
     Texture2D _sprite1BoundingBoxTexture;
@@ -98,7 +102,10 @@ public class DebugGameManager
             size: size,
             spriteContent: spriteContent,
             animationManager: animationManager,
-            inputManager: inputManager);
+            inputManager: inputManager,
+            id: "player1");
+
+        PlayerHit += player1.OnHit;
 
         return player1;
     }
@@ -128,7 +135,10 @@ public class DebugGameManager
         size: size,
         spriteContent: spriteContent2,
         animationManager: animationManager2,
-        inputManager: inputManager);
+        inputManager: inputManager,
+        id: "player2");
+
+        PlayerHit += player2.OnHit;
 
         return player2;
     }
@@ -165,18 +175,12 @@ public class DebugGameManager
             var texturesCollide = Globals.SpriteTexturesCollide(_player1, _player2, _collisionData);
 
             if (texturesCollide)
-            {        
-                if (_collisionData.CurrentAnimationFrameA.Hit)
-                {                    
-                    _playerHit = true;                  
-                    _player2.OnHit();
-                    _player2Health -= 1;
-                }
-                if (_collisionData.CurrentAnimationFrameB.Hit)
-                {                   
-                    _playerHit = true;               
-                    _player1.OnHit();
-                    _player1Health -= 1;
+            {
+                if (_collisionData.CurrentFrameA.Hits || _collisionData.CurrentFrameB.Hits)
+                {
+                    _playerHit = true;
+                    var playerId = _collisionData.CurrentFrameA.Hits ? "player2" : "player1";
+                    OnPlayerHit(new PlayerHitEventArgs(playerId));
                 }
             }
         }
@@ -229,8 +233,8 @@ public class DebugGameManager
 
     private void DrawPlayerScores()
     {
-        Globals.SpriteBatch.DrawString(_font, $"Player 1 Health: {_player1Health}", new Vector2(0, 180), Color.White);
-        Globals.SpriteBatch.DrawString(_font, $"Player 2 Health: {_player2Health} ", new Vector2(0, 200), Color.White);
+        Globals.SpriteBatch.DrawString(_font, $"Player 1 Health: {_player1.Health}", new Vector2(0, 180), Color.White);
+        Globals.SpriteBatch.DrawString(_font, $"Player 2 Health: {_player2.Health} ", new Vector2(0, 200), Color.White);
     }
 
     #region debug

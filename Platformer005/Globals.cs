@@ -18,8 +18,8 @@ public class CollisionData
     public Vector2 PixelCoordinatesA { get; set; }
     public Vector2 PixelCoordinatesB { get; set; }
     public Vector2 ScreenCoordinates {  get; set; }
-    public Frame CurrentAnimationFrameA { get; set; }
-    public Frame CurrentAnimationFrameB { get; set; }
+    public Frame CurrentFrameA { get; set; }
+    public Frame CurrentFrameB { get; set; }
 
 }
 
@@ -91,8 +91,8 @@ public static class Globals
                                 {
                                     collisionData.PixelCoordinatesA = pixelCoordinateA;
                                     collisionData.PixelCoordinatesB = pixelCoordinateB;       
-                                    collisionData.CurrentAnimationFrameA = spriteA.CurrentAnimation.Frames[currentFrameNumberA];
-                                    collisionData.CurrentAnimationFrameB = spriteB.CurrentAnimation.Frames[currentFrameNumberB];
+                                    collisionData.CurrentFrameA = spriteA.CurrentAnimation.Frames[currentFrameNumberA];
+                                    collisionData.CurrentFrameB = spriteB.CurrentAnimation.Frames[currentFrameNumberB];
                                     collisionData.ScreenCoordinates = Vector2.Transform(pixelCoordinateA, spriteA.Matrix);
                                 }
                                                  

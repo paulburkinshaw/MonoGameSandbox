@@ -34,7 +34,7 @@ namespace Platformer005
         {
             JObject jsonObject = JObject.Load(reader);
 
-            var spritesheetData = new SpritesheetData();     
+            var spritesheetData = new SpritesheetData();
 
             var frames = JsonConvert.DeserializeObject<List<Frame>>(
             jsonObject["frames"].ToString(),
@@ -44,15 +44,12 @@ namespace Platformer005
             });
 
             var layers = JsonConvert.DeserializeObject<List<Layer>>(jsonObject["meta"]["layers"].ToString());
-               
-            foreach ( var frame in frames)
-            {          
-                var frameHit = (layers.Where(layer => GetLayerName(layer.Name ) == frame.AnimationType.ToString() 
+
+            foreach (var frame in frames)
+            {
+                frame.Hits = (layers.Where(layer => GetLayerName(layer.Name) == frame.AnimationType.ToString()
                                        && layer.Cells?.Where(cell => cell.FrameNumber == frame.FrameNumber && cell.Data == "hit").Count() > 0)
                                ).Any();
-
-                if (frameHit)
-                    frame.Hit = true;
             }
 
             spritesheetData.Frames = frames;

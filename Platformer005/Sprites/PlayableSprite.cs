@@ -8,6 +8,7 @@ public class PlayableSprite : Sprite
     private const float JUMP = 200f;
     private float _speed => GetSpeed();
     private Vector2 _velocity;
+    private int _health;
     private bool _jumpKeyPressed = false;
     private bool _jumping = false;
     private bool _attacking1 = false;
@@ -17,14 +18,18 @@ public class PlayableSprite : Sprite
     private bool _onGround;
     private InputManager _inputManager;
 
+    public int Health => _health;
     public bool Attacking => _attacking1 || _attacking2;
 
     public PlayableSprite(Vector2 position,
         Rectangle size,
         SpriteContent spriteContent,
         AnimationManager animationManager,
-        InputManager inputManager) : base(position, size, spriteContent, animationManager)
+        InputManager inputManager,
+        string id) : base(position, size, spriteContent, animationManager, id)
     {
+        _health = 100;
+
         _inputManager = inputManager;
         _inputManager.JumpKeyPressed += OnJumpKeyPressed;
         _inputManager.Attack1KeyPressed += OnAttack1KeyPressed;
@@ -49,11 +54,15 @@ public class PlayableSprite : Sprite
     {
         _attacking2 = true;
     }
-    public void OnHit()
+    public void OnHit(object sender, PlayerHitEventArgs args)
     {
-        _falling = true;
+        if (args.PlayerId == _id)
+        {
+            _falling = true;
+            _health -= 1;
+        }        
     }
-    public void OnStand()
+    void OnStand()
     {
         _standing = true;
     }
@@ -98,11 +107,11 @@ public class PlayableSprite : Sprite
 
         MoveX(movementAmount.X, OnCollidesWithTileX);
         MoveY(movementAmount.Y, OnCollidesWithTileY);
-        
+
     }
 
     private void OnCollidesWithTileX(CollidesWithTileEventArgs args)
-    {    
+    {
         if (args.NewPosition > _position.X)
         {
             _position.X = args.CollidingTile.Left - _size.Width;

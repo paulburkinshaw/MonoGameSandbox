@@ -32,9 +32,11 @@ public abstract class Sprite
     protected Rectangle _size;
     protected SpriteContent _spriteContent;
     protected AnimationManager _animationManager;
-    protected Animation _currentAnimation;    
+    protected Animation _currentAnimation;
+    protected string _id;
     Vector2 _origin = Vector2.Zero;
     float _rotation = 0;
+    
 
     public Rectangle BoundingBox => GetBoundingBox();
     public Animation CurrentAnimation => _currentAnimation;   
@@ -43,12 +45,14 @@ public abstract class Sprite
     public Sprite(Vector2 position,
         Rectangle size,
         SpriteContent spriteContent,
-        AnimationManager animationManager)
+        AnimationManager animationManager,
+        string id)
     {
         _position = position;
         _size = size;
         _spriteContent = spriteContent;
         _animationManager = animationManager;
+        _id = id;
 
         _animationManager.AddAnimations(_spriteContent.AnimationConfig, _spriteContent.Texture);
         animationManager.AnimationStarted += OnAnimationStarted;

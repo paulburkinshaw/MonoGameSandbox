@@ -49,7 +49,7 @@ namespace Platformer005
         public int Duration { get; set; }
         public AnimationType AnimationType { get; set; }
         public string FrameNumber { get; set; }
-        public bool Hit { get; set; }
+        public bool Hits { get; set; }
         public bool RunOnce { get; set; }
     }
 

@@ -2,7 +2,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Platformer004.Sprites;
-using System.Diagnostics;
 using System.IO;
 
 namespace Platformer004.Managers;
