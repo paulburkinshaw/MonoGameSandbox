@@ -25,22 +25,14 @@ public class Game1 : Game
     protected override void Initialize()
     {
         Globals.Background = Color.Black;
-        //Globals.InternalSize = new Rectangle(0, 0, 320, 180);
-
-        // 40x22 16x16px tiles
-        // 20x11 32x32px tiles
+       
+        // 16:9 aspect ratio
+        // 80x45 8x8px tiles
         Globals.InternalSize = new Rectangle(0, 0, 640, 360);
-        //Globals.WindowSize = new Rectangle(0, 0, 640, 360);
-        Globals.WindowSize = new Rectangle(0, 0, 1280, 720);
 
-        //Globals.InternalSize = new Rectangle(0, 0, 1366, 768);
-
-        Globals.WindowSize = new Rectangle(0, 0, 1600, 900);
-        //Globals.InternalSize = new Rectangle(0, 0, 1280, 720);
-
-        //Globals.WindowSize = new Rectangle(0, 0, 1600, 900);
-        //Globals.WindowSize = new Rectangle(0, 0, 2560, 1440);
-        //Globals.WindowSize = new Rectangle(0, 0, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+        // 16:9 aspect ratio
+        // 3x scale
+        Globals.WindowSize = new Rectangle(0, 0, 1920, 1080);
 
         _graphics.IsFullScreen = false;
         _graphics.PreferredBackBufferWidth = Globals.WindowSize.Width;
