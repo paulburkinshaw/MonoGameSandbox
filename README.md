@@ -6,6 +6,8 @@
   - [Platformer003](#platformer003)
   - [Platformer004](#platformer004)
   - [Platformer005](#platformer005)
+  - [Platformer006](#platformer006)
+  - [Platformer007 - Tiled integration](#platformer007---tiled-integration)
 - [MonoGame](#monogame)
   - [Game Time](#game-time)
     - [Fixed Time](#fixed-time)
@@ -31,6 +33,7 @@
   - [Tiled](#tiled)
     - [Setting up your tileset](#setting-up-your-tileset)
     - [Setting up your tilemap](#setting-up-your-tilemap)
+      - [Rotating and flipping tiles](#rotating-and-flipping-tiles)
     - [Exporting your tilemap](#exporting-your-tilemap)
     - [Reading the tileset and tilemap in Monogame](#reading-the-tileset-and-tilemap-in-monogame)
 - [Debugging](#debugging)
@@ -54,6 +57,11 @@ TODO: add info for Platformer004
 ## Platformer005
 TODO: add info for Platformer005
 
+## Platformer006
+TODO: add info for Platformer006
+
+## Platformer007 - Tiled integration
+Introduces Tiled integration - parsing of tileset (.tsx) and tilemap (.tmx) files 
 
 # MonoGame
 
@@ -268,22 +276,62 @@ This can then be consumed by the `AnimationFrameConverter` which extracts the sp
 ## Tiled
 
 ### Setting up your tileset
-
+Make sure the tileset is named the same as the tileset image it is based on and that the image and the .tsj file are in the same location as this will effect the path value of the `image` property of the tileset json within the .tsj file and the embedded tileset of the tilemap json within the .tmj file (see exporting your tilemap below) e.g. if the tileset image source is named tileset1.png name your tileset tileset1 
 
 ### Setting up your tilemap
-
+While working on the tilemap in Tiled you can keep the tilset(s) the tilemap uses as external (an external .tsj file) this allows flexibility in editing tilesets and for using them in multiple tilemaps rather than locking them into an individual tilemap. When you are ready to use the tilemap in Monogame you can embed the tileset in the exported .tmj file (see below) 
+#### Rotating and flipping tiles
+You can rotate tiles in your tilemap by pressing Z and Shift+Z and flip horizontal and vertical with X and Y keys. You need to do this *before you place the tiles
 
 ### Exporting your tilemap
-
+Ensure `Embed tilesets` is enabled in the Preferences/General/Export Options section, this allows us to parse the tileset info (image size, tile dimensions etc) without requiring a seperate tileset json file.
 
 ### Reading the tileset and tilemap in Monogame
-Tilemap files (.tmx, .tmj etc) specify a tilemap in a `data` array where each element of the array corresponds to a tile within a .tsx tileset source, specified in the `source` property. The array element value is the position within the tileset, eg a value of 43 would be the 43rd tile in the tileset. To get the actual coordinates of the tile in the tileset image you will need to multiply the tile position value by the tile width (eg 32px). To get the y position (row) divide this result by the width of the tileset and multiply this by the tile height. The x position (column) is the remainder of this division which can be retrieved using the C# modulus operator.
+Tilemap files (.tmx, .tmj etc) specify a tilemap in a `data` array where each element of the array corresponds to a tile within a .tsx tileset source (the image containing the tileset specified in the `source` property). The array element value is the position within the tileset image, eg a value of 43 would be the 43rd tile in the tileset. To get the actual coordinates of the tile in the tileset image you will need to multiply the tile position value by the tile width (eg 32px). To get the y position (row) divide this result by the width of the tileset and multiply this by the tile height. The x position (column) is the remainder of this division which can be retrieved using the C# modulus operator.
 \
 eg to get the x and y position of a `32x32px` tile in the `43`rd position within a tileset of `width=608px` and `height=416px` do the following: 
 - 43 * 32 = 1376
 - x position: 1376 % 608 = 160  
 - y position:  (1376 / 608) * 32 = 64 
 
+
+How to integrate with Tiled:
+
+- Ensure the tileset and tileset image files are in the project's `Content/Tilesets` folder and the tilemap files are in the `Content/Tilemaps` folder, and that Copy to Output Directory is set to Copy Always for all the files
+
+- Start with the tilemap(s)
+- go get the tilset (image and .tsj files) for the tilemap
+- once the data for each tilemap layer is loaded in calculate the coordinates for each data element
+  - replace the element value (the tile number from the tileset with the x,y position within the tileset image)
+  - OR do the calculation on the fly for each element.
+
+
+
+
+
+
+
+- Read tileset file (.tsx or .tsj file)
+	- get tileset image source
+	- get tile w & h
+	- get tileset image w & h
+	- get tilecount (?)
+	- get column count (?)
+
+- Load tilset image
+
+- Load tilemap file (.tmx or .tmj file)
+  - Get layers
+    - Get BackgroundTiles layer
+      - get layer w & h
+      - get data array
+    - Get CollidableTiles layer
+      - get layer w & h
+      - get data array
+
+- 
+	
+	
 
 <hr/>
 
