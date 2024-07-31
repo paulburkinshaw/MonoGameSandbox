@@ -50,6 +50,7 @@ public abstract class Sprite
     protected string _id;
     Vector2 _origin = Vector2.Zero;
     float _rotation = 0;
+    private Tilemap _tilemap;
 
 
     public Rectangle BoundingBox => GetBoundingBox();
@@ -62,12 +63,14 @@ public abstract class Sprite
         Rectangle size,
         SpriteContent spriteContent,
         AnimationManager animationManager,
+        Tilemap tilemap,
         string id)
     {
         _position = position;
         _size = size;
         _spriteContent = spriteContent;
         _animationManager = animationManager;
+        _tilemap = tilemap;
         _id = id;
 
         _animationManager.AddAnimations(_spriteContent.AnimationConfig, _spriteContent.Texture);
@@ -105,7 +108,7 @@ public abstract class Sprite
         var newXPosition = _position.X + xAmount;
         var newXPositionBoundingBox = new Rectangle((int)newXPosition, (int)_position.Y, _size.Width, _size.Height);
 
-        var colliders = Tilemap.GetNearestColliders(newXPositionBoundingBox);
+        var colliders = _tilemap.GetNearestColliders(newXPositionBoundingBox);
 
         if (!CollidesWithTile(colliders: colliders, newPosition: new Vector2(newXPosition, _position.Y), out Rectangle collidingTile))
         {
@@ -127,7 +130,7 @@ public abstract class Sprite
         var newYPosition = _position.Y + yAmount;
         var newYPositionBoundingBox = new Rectangle((int)_position.X, (int)newYPosition, _size.Width, _size.Height);
 
-        var colliders = Tilemap.GetNearestColliders(newYPositionBoundingBox);
+        var colliders = _tilemap.GetNearestColliders(newYPositionBoundingBox);
 
         if (!CollidesWithTile(colliders: colliders, newPosition: new Vector2(_position.X, newYPosition), out Rectangle collidingTile))
         {

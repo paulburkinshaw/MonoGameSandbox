@@ -6,7 +6,7 @@ using Platformer007.Sprites;
 using System.IO;
 using Platformer007.Controls;
 using System.Collections.Generic;
-using Tiled.NET.Models;
+using Tiled.NET;
 
 namespace Platformer007.Managers;
 
@@ -76,9 +76,9 @@ public class DebugGameManager
         // TODO: each screen's tilemap could be in a config file of its own
         // screenNumber: Screen1, tilemap: Tilemaps\Platformer_Screen1_Tilemap.tmj
         var screen1TilemapFilepath = @"Content\Tilemaps\Platformer_Screen1_Tilemap.tmj";
-        //var tiledTilemap = new TiledTilemap(screen1TilemapFilepath);
+        //_tileMap = new Tilemap(screen1TilemapFilepath);
 
-        _tileMap = new Tilemap(screen1TilemapFilepath);
+        _tileMap = new Tilemap(Globals.FileSystem, Globals.TiledTilemapJsonService, screen1TilemapFilepath);
 
         _player1 = GetPlayer1();
         _player2 = GetPlayer2();
@@ -110,6 +110,7 @@ public class DebugGameManager
             size: size,
             spriteContent: spriteContent,
             animationManager: animationManager,
+            tilemap: _tileMap,
             inputManager: inputManager,
             id: "player1");
 
@@ -144,6 +145,7 @@ public class DebugGameManager
         size: size,
         spriteContent: spriteContent2,
         animationManager: animationManager2,
+        tilemap: _tileMap,
         inputManager: inputManager,
         id: "player2");
 

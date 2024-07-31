@@ -42,8 +42,8 @@ public class GameManager
     public GameManager()
     {
         var screen1TilemapFilepath = @"Content\Tilemaps\Platformer_Screen1_Tilemap.tmj";
-
         _tileMap = new Tilemap(screen1TilemapFilepath);
+
         _player1 = GetPlayer1();
         _player2 = GetPlayer2();
     }
@@ -74,6 +74,7 @@ public class GameManager
             size: size,
             spriteContent: spriteContent,
             animationManager: animationManager,
+            tilemap: _tileMap,
             inputManager: inputManager,
             id: "player1");
 
@@ -108,6 +109,7 @@ public class GameManager
         size: size,
         spriteContent: spriteContent2,
         animationManager: animationManager2,
+        tilemap: _tileMap,
         inputManager: inputManager,
         id: "player2");
 

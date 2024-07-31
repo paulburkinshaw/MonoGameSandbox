@@ -2,7 +2,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO.Abstractions;
 using System.Linq;
+using Tiled.NET;
 using Tiled.NET.Models;
 
 namespace Platformer007;
@@ -21,7 +23,17 @@ public class Tilemap : TiledTilemap
 
     private static TileCollider[,] _tileColliders;
 
+    public Tilemap(IFileSystem fileSystem, ITiledTilemapJsonService tiledTilemapJsonService, string filePath) : base(fileSystem, tiledTilemapJsonService, filePath)
+    {
+        InitializeTilemap();
+    }
+
     public Tilemap(string filePath) : base(filePath)
+    {
+        InitializeTilemap();
+    }
+
+    private void InitializeTilemap()
     {
         // get tileset textures
         foreach (var tileset in Tilesets)
@@ -66,7 +78,7 @@ public class Tilemap : TiledTilemap
         Globals.GraphicsDevice.SetRenderTarget(null);
     }
 
-    public static List<TileCollider> GetNearestColliders(Rectangle boundingBox)
+    public List<TileCollider> GetNearestColliders(Rectangle boundingBox)
     {
         int yLength = _tiles.GetLength(0) - 1;
         int xLength = _tiles.GetLength(1);

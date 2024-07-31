@@ -32,6 +32,6 @@ namespace Tiled.NET
         public override void WriteJson(JsonWriter writer, TilemapDTO value, JsonSerializer serializer)
         {
             throw new NotImplementedException("Writing JSON is not implemented for SpritesheetDataConverter");
-        }
+        }     
     }
 }

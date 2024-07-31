@@ -30,7 +30,7 @@ namespace Tiled.NET.DTOs
         /// <summary>
         /// The tile height in pixels
         /// </summary>
-        public int TileHeight { get; set; }
+        public int TileHeight { get; set; }    
     }
 
     public class LayerDTO

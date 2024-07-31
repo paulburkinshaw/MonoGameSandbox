@@ -2,7 +2,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Platformer007.Sprites;
-using System;
+using System.IO.Abstractions;
+using Tiled.NET;
 
 namespace Platformer007;
 
@@ -32,10 +33,10 @@ public static class Globals
     public static GraphicsDevice GraphicsDevice { get; set; }
     public static Rectangle InternalSize { get; set; }
     public static Rectangle WindowSize { get; set; }
-
     public static Color Background { get; set; }
-
     public static Physics Physics => new();
+    public static FileSystem FileSystem = new FileSystem();
+    public static ITiledTilemapJsonService TiledTilemapJsonService = new TiledTilemapJsonService();
 
     public static Color[,] GetColourDataFromTexture(Texture2D texture, Rectangle sourceRectangle)
     {

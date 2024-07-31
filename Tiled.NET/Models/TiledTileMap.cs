@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
-using Tiled.NET.DTOs;
+﻿using Tiled.NET.DTOs;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.IO.Abstractions;
 
 namespace Tiled.NET.Models
 {
@@ -15,35 +15,44 @@ namespace Tiled.NET.Models
         const uint FLIPPED_DIAGONALLY_FLAG = 0x20000000; // 0010 0000 0000 0000 0000 0000 0000 0000
         const uint ROTATED_HEXAGONAL_120_FLAG = 0x10000000; // 0001 0000 0000 0000 0000 0000 0000 0000
 
+        private IFileSystem _fileSystem;
+        private ITiledTilemapJsonService _tiledTilemapJsonService;
+
         public IEnumerable<TiledLayer> Layers { get; private set; }
         public IEnumerable<TiledTileset> Tilesets { get; private set; }
 
         /// <summary>
         /// The amount of horizontal tiles
         /// </summary>
-        public int TileCountX { get; set; }
+        public int TileCountX { get; private set; }
 
         /// <summary>
         /// The amount of vertical tiles
         /// </summary>
-        public int TileCountY { get; set; }
+        public int TileCountY { get; private set; }
 
         /// <summary>
         /// The tile width in pixels
         /// </summary>
-        public static int TileWidth { get; private set; }
+        public int TileWidth { get; private set; }
 
         /// <summary>
         /// The tile height in pixels
         /// </summary>
-        public static int TileHeight { get; private set; }
+        public int TileHeight { get; private set; }
 
-        public TiledTilemap()
+        public TiledTilemap(IFileSystem fileSystem, ITiledTilemapJsonService tiledTilemapJsonService, string filePath)
         {
-
+            _fileSystem = fileSystem;
+            _tiledTilemapJsonService = tiledTilemapJsonService;
+            InitializeTilemap(filePath);
         }
 
-        public TiledTilemap(string filePath)
+        public TiledTilemap(string filePath) : this(fileSystem: new FileSystem(), tiledTilemapJsonService: new TiledTilemapJsonService(), filePath)
+        {
+        }
+
+        private void InitializeTilemap(string filePath)
         {
             // Construct TiledTileMap steps
             // - Get TilemapDTO from .tmj or .tmx file
@@ -53,19 +62,20 @@ namespace Tiled.NET.Models
             //          - Convert TileGIDs to TiledTiles
             //
 
-            if (!File.Exists(filePath))
+            if (!_fileSystem.File.Exists(filePath))
                 throw new FileNotFoundException($"{filePath} not found");
 
             TilemapDTO tilemapDTO;
 
-            var extension = Path.GetExtension(filePath);
+            var extension = _fileSystem.Path.GetExtension(filePath);
             switch (extension)
             {
                 case ".tmx":
                     // TODO: Support .tmx files
                     throw new NotImplementedException(extension);
                 case ".tmj":
-                    tilemapDTO = GetTilemapDTOFromJsonFile(File.ReadAllText(filePath));
+                    var tilemapJsonString = _fileSystem.File.ReadAllText(filePath);
+                    tilemapDTO = _tiledTilemapJsonService.GetTilemapDTOFromJsonFile(tilemapJsonString);                
                     break;
                 default:
                     throw new NotImplementedException(extension);
@@ -76,23 +86,11 @@ namespace Tiled.NET.Models
             TileWidth = tilemapDTO.TileWidth;
             TileHeight = tilemapDTO.TileHeight;
 
-            // Convert TilesetDTO to TiledTileset 
+            // Map TilesetDTO to TiledTileset 
             Tilesets = MapTilesetDTOsToTiledTilesets(tilemapDTO.TilesetDTOs);
 
-            // Convert LayerDTO to TiledLayer 
+            // Map LayerDTO to TiledLayer 
             Layers = MapLayerDTOsToTiledLayers(tilemapDTO.LayerDTOs, Tilesets.ToList());
-        }
-
-        private TilemapDTO GetTilemapDTOFromJsonFile(string tilemapJsonString)
-        {
-            var tilemapDTO = JsonConvert.DeserializeObject<TilemapDTO>(
-            tilemapJsonString,
-            new JsonSerializerSettings
-            {
-                Converters = new List<JsonConverter> { new TiledTilemapJsonConverter() }
-            });
-
-            return tilemapDTO;
         }
 
         private IEnumerable<TiledTileset> MapTilesetDTOsToTiledTilesets(IEnumerable<TilesetDTO> tilesetDTOs)
@@ -109,16 +107,17 @@ namespace Tiled.NET.Models
         private IEnumerable<TiledLayer> MapLayerDTOsToTiledLayers(IEnumerable<LayerDTO> layerDTOs, List<TiledTileset> tilesets)
         {
             var tiledLayers = new List<TiledLayer>();
+
             foreach (var layerDTO in layerDTOs)
             {
-                var tiledLayer = new TiledLayer();
-
-                tiledLayer.TileGIDs = layerDTO.TileGIDs;
-                tiledLayer.Name = layerDTO.Name;
-                tiledLayer.TileCountX = layerDTO.Width;
-                tiledLayer.TileCountY = layerDTO.Height;
-
-                // Convert TileGIDs to TiledTiles
+                var tiledLayer = new TiledLayer
+                {
+                    TileGIDs = layerDTO.TileGIDs,
+                    Name = layerDTO.Name,
+                    TileCountX = layerDTO.Width,
+                    TileCountY = layerDTO.Height                
+                };
+               
                 tiledLayer.Tiles = GetTilesForLayer(tiledLayer, tilesets);
 
                 tiledLayers.Add(tiledLayer);
@@ -133,7 +132,7 @@ namespace Tiled.NET.Models
         /// <param name="layer">The layer containing the TileGIDs</param>
         /// <param name="tilesets">tileset collection</param>
         /// <returns>TiledTile[,]</returns>
-        public TiledTile[,] GetTilesForLayer(TiledLayer layer, List<TiledTileset> tilesets)
+        private TiledTile[,] GetTilesForLayer(TiledLayer layer, List<TiledTileset> tilesets)
         {
             // Convert TileGIDs to TiledTiles steps
             // - For each tile index in the TileGIDs array:
@@ -187,7 +186,7 @@ namespace Tiled.NET.Models
                             TileFlipFlags = tileFlipFlags
                         };
                     }
-                   
+
                 }
             }
 
@@ -242,7 +241,7 @@ namespace Tiled.NET.Models
             var tileset = tilesets.Where(x => x.FirstGID == firstGIDs.Max()).FirstOrDefault();
 
             return tileset;
-        }
+        }  
 
     }
 

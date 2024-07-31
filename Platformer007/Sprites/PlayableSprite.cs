@@ -28,7 +28,8 @@ public class PlayableSprite : Sprite
         SpriteContent spriteContent,
         AnimationManager animationManager,
         InputManager inputManager,
-        string id) : base(position, size, spriteContent, animationManager, id)
+        Tilemap tilemap,
+        string id) : base(position, size, spriteContent, animationManager, tilemap, id)
     {
         _health = 100;
 

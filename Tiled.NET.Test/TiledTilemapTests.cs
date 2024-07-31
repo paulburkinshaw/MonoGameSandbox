@@ -1,64 +1,177 @@
+using Moq;
 using Newtonsoft.Json;
-using NUnit.Framework;
-using System.ComponentModel;
+using System.IO.Abstractions.TestingHelpers;
+using Tiled.NET.DTOs;
 using Tiled.NET.Models;
 
 namespace Tiled.NET.Test
 {
     public class TiledTilemapTests
     {
-       
+        TilemapDTO _tilemapDTO;
+
         [SetUp]
         public void Setup()
         {
+            _tilemapDTO = new TilemapDTO
+            {
+                Width = 10,
+                Height = 5,
+                TileHeight = 8,
+                TileWidth = 8,
+                LayerDTOs = new List<LayerDTO> {
+                    new LayerDTO
+                    {
+                        Name = "Tiles",
+                        Width = 10,
+                        Height = 5,
+                        TileGIDs = new uint[50] {
+                            1,2,0,0,0,0,0,0,0,0,
+                            0,0,0,0,0,0,0,0,0,0,
+                            0,0,0,0,0,0,0,0,0,0,
+                            0,0,0,0,0,0,0,0,0,0,
+                            0,0,0,0,0,0,0,0,0,0
+                        }
+                    }
+                },
+                TilesetDTOs = new List<TilesetDTO>
+                {
+                    new TilesetDTO
+                    {
+                        Name = "tileset1",
+                        Image = "tileset1.png",
+                        FirstGID = 1,
+                        ImageWidth = 200,
+                        ImageHeight = 200,
+                        TileWidth = 16,
+                        TileHeight = 16
+                    },
+                     new TilesetDTO
+                    {
+                        Name = "tileset2",
+                        Image = "tileset2.png",
+                        FirstGID = 248,
+                        ImageWidth = 200,
+                        ImageHeight = 200,
+                        TileWidth = 16,
+                        TileHeight = 16
+                    }
+                }
+            };
         }
 
 
         [Test]
-        public void GetTilesForLayer_NoEncodedFlipFlags_ReturnsCorrectTiles()
+        public void Constructor_NoEncodedFlipFlags_ReturnsCorrectTiledTilemap()
         {
-            var tiledTilemap = new TiledTilemap();
+            // Arrange
+            var mockTilemapJsonString = "mockTilemapJsonString";
 
-            var layer = new TiledLayer
+            var mockFileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
-                Name = "Tiles",
-                TileCountX = 10,
-                TileCountY = 5,
-                TiledLayerType = TiledLayerType.TileLayer,
-                TileGIDs = new uint[50] {
-                    1,2,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0
+                { @"\Content\Tilemaps\MockTilemap.tmj", new MockFileData(mockTilemapJsonString) }
+            });
+
+            var mockTilemapFilepath = @"\Content\Tilemaps\MockTilemap.tmj";
+
+            var tilemapDTO = _tilemapDTO;
+            _tilemapDTO.LayerDTOs = new List<LayerDTO> {
+                new LayerDTO
+                {
+                    Name = "Tiles",
+                    Width = 10,
+                    Height = 5,
+                    TileGIDs = new uint[50] {
+                        1,2,0,0,0,0,0,0,0,0,
+                        0,0,0,0,0,0,0,0,0,0,
+                        0,0,0,0,0,0,0,0,0,0,
+                        0,0,0,0,0,0,0,0,0,0,
+                        0,0,0,0,0,0,0,0,0,0
+                    }
                 }
             };
 
-            var tilesets = new List<TiledTileset>
+            _tilemapDTO.TilesetDTOs = new List<TilesetDTO>
             {
-                new TiledTileset
+                new TilesetDTO
                 {
+                    Name = "tileset1",
+                    Image = "tileset1.png",
                     FirstGID = 1,
                     ImageWidth = 200,
                     ImageHeight = 200,
                     TileWidth = 16,
                     TileHeight = 16,
-                    Name = "tileset1"
+
                 },
-                 new TiledTileset
+                new TilesetDTO
                 {
+                    Name = "tileset2",
+                    Image = "tileset2.png",
                     FirstGID = 248,
                     ImageWidth = 200,
                     ImageHeight = 200,
                     TileWidth = 16,
                     TileHeight = 16,
-                    Name = "tileset2"
                 }
             };
 
-            TiledTile[,] expected = new TiledTile[layer.TileCountY, layer.TileCountX];
+            var tiledTilemapJsonServiceMock = new Mock<ITiledTilemapJsonService>();
 
-            expected[0, 0] = new TiledTile
+            tiledTilemapJsonServiceMock
+                .Setup(x => x.GetTilemapDTOFromJsonFile(It.Is<string>(tilemapJsonString => tilemapJsonString == mockTilemapJsonString)))
+                .Returns(tilemapDTO);
+
+            var expected = new
+            {             
+                Layers = new List<TiledLayer>
+                {
+                    new TiledLayer {
+                        Name = "Tiles",
+                        TileCountX = 10,
+                        TileCountY = 5,
+                        TiledLayerType = TiledLayerType.TileLayer,
+                        TileGIDs = new uint[50] {
+                            1,2,0,0,0,0,0,0,0,0,
+                            0,0,0,0,0,0,0,0,0,0,
+                            0,0,0,0,0,0,0,0,0,0,
+                            0,0,0,0,0,0,0,0,0,0,
+                            0,0,0,0,0,0,0,0,0,0
+                        },
+                        Tiles = new TiledTile[5, 10]
+                    }
+                },
+                Tilesets = new List<TiledTileset>
+                {
+                    new TiledTileset
+                    {
+                        Name = "tileset1",
+                        ImageName = "tileset1.png",
+                        FirstGID = 1,
+                        ImageWidth = 200,
+                        ImageHeight = 200,
+                        TileWidth = 16,
+                        TileHeight = 16,
+                        
+                    },
+                    new TiledTileset
+                    {
+                        Name = "tileset2",
+                         ImageName = "tileset2.png",
+                        FirstGID = 248,
+                        ImageWidth = 200,
+                        ImageHeight = 200,
+                        TileWidth = 16,
+                        TileHeight = 16,                     
+                    }
+                },
+                TileCountX = 10,
+                TileCountY = 5,
+                TileWidth = 8,
+                TileHeight = 8
+            };
+
+            expected.Layers[0].Tiles[0, 0] = new TiledTile
             {
                 TileSetId = 1,
                 LocalTileId = 0,
@@ -77,7 +190,7 @@ namespace Tiled.NET.Test
                     RotatedHex120 = false,
                 }
             };
-            expected[0, 1] = new TiledTile
+            expected.Layers[0].Tiles[0, 1] = new TiledTile
             {
                 TileSetId = 1,
                 LocalTileId = 1,
@@ -97,22 +210,17 @@ namespace Tiled.NET.Test
                 }
             };
 
-            var result = tiledTilemap.GetTilesForLayer(layer, tilesets);
+            // ACT
+            var result = new TiledTilemap(mockFileSystem, tiledTilemapJsonServiceMock.Object, mockTilemapFilepath);
 
-            for (int y = 0; y < layer.TileCountY; y++)
-            {
-                for (int x = 0; x < layer.TileCountX; x++)
-                {
-                    AreEqualByJson(expected[y, x], result[y, x]);
-                }
-            }
-
+            // ASSERT
+            AreEqualByJson(expected, result);
         }
 
         [Test]
-        public void GetTilesForLayer_EncodedFlipFlags_ReturnsCorrectTiles()
+        public void Constructor_EncodedFlipFlags_ReturnsCorrectTiledTilemap()
         {
-            var tiledTilemap = new TiledTilemap();
+            // Arrange
 
             // first 4 bits encoded with: 1010, the tile is flipped horizontally and antidiagonally - 90 degrees clockwise, or right rotation
             // LocalTileId = 79
@@ -129,45 +237,88 @@ namespace Tiled.NET.Test
             // LocalTileId = 3
             uint unencodedTile = 251;
 
-            var layer = new TiledLayer
+            var mockTilemapJsonString = "mockTilemapJsonString";
+
+            var mockFileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
             {
-                Name = "Tiles",
+                { @"\Content\Tilemaps\MockTilemap.tmj", new MockFileData(mockTilemapJsonString) }
+            });
+
+            var mockTilemapFilepath = @"\Content\Tilemaps\MockTilemap.tmj";
+
+            var tilemapDTO = _tilemapDTO;
+            _tilemapDTO.LayerDTOs = new List<LayerDTO> {
+                new LayerDTO
+                {
+                    Name = "Tiles",
+                    Width = 10,
+                    Height = 5,
+                    TileGIDs = new uint[50] {
+                        encodedTile1,encodedTile2,encodedTile3,unencodedTile,0,0,0,0,0,0,
+                        0,0,0,0,0,0,0,0,0,0,
+                        0,0,0,0,0,0,0,0,0,0,
+                        0,0,0,0,0,0,0,0,0,0,
+                        0,0,0,0,0,0,0,0,0,0
+                    }
+                }
+            };
+
+            var tiledTilemapJsonServiceMock = new Mock<ITiledTilemapJsonService>();
+
+            tiledTilemapJsonServiceMock
+                .Setup(x => x.GetTilemapDTOFromJsonFile(It.Is<string>(tilemapJsonString => tilemapJsonString == mockTilemapJsonString)))
+                .Returns(tilemapDTO);
+
+            var expected = new
+            {
+                Layers = new List<TiledLayer>
+                {
+                    new TiledLayer {
+                        Name = "Tiles",
+                        TileCountX = 10,
+                        TileCountY = 5,
+                        TiledLayerType = TiledLayerType.TileLayer,
+                        TileGIDs = new uint[50] {
+                            encodedTile1,encodedTile2,encodedTile3,unencodedTile,0,0,0,0,0,0,
+                            0,0,0,0,0,0,0,0,0,0,
+                            0,0,0,0,0,0,0,0,0,0,
+                            0,0,0,0,0,0,0,0,0,0,
+                            0,0,0,0,0,0,0,0,0,0
+                        },
+                        Tiles = new TiledTile[5, 10]
+                    }
+                },
+                Tilesets = new List<TiledTileset>
+                {
+                    new TiledTileset
+                    {
+                        Name = "tileset1",
+                        ImageName = "tileset1.png",
+                        FirstGID = 1,
+                        ImageWidth = 200,
+                        ImageHeight = 200,
+                        TileWidth = 16,
+                        TileHeight = 16,
+
+                    },
+                    new TiledTileset
+                    {
+                        Name = "tileset2",
+                         ImageName = "tileset2.png",
+                        FirstGID = 248,
+                        ImageWidth = 200,
+                        ImageHeight = 200,
+                        TileWidth = 16,
+                        TileHeight = 16,
+                    }
+                },
                 TileCountX = 10,
                 TileCountY = 5,
-                TiledLayerType = TiledLayerType.TileLayer,
-                TileGIDs = new uint[50] {
-                    encodedTile1,encodedTile2,encodedTile3,unencodedTile,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0
-                }
+                TileWidth = 8,
+                TileHeight = 8
             };
 
-            var tilesets = new List<TiledTileset>
-            {
-                 new TiledTileset
-                {
-                    FirstGID = 1,
-                    ImageWidth = 300,
-                    ImageHeight = 300,
-                    TileWidth = 32,
-                    TileHeight = 32,
-                    Name = "tileset1"
-                },
-                new TiledTileset
-                {
-                    FirstGID = 248,
-                    ImageWidth = 200,
-                    ImageHeight = 200,
-                    TileWidth = 16,
-                    TileHeight = 16,
-                    Name = "tileset2"
-                }
-            };
-
-            TiledTile[,] expected = new TiledTile[layer.TileCountY, layer.TileCountX];
-            expected[0, 0] = new TiledTile
+            expected.Layers[0].Tiles[0, 0] = new TiledTile
             {
                 TileSetId = 248,
                 LocalTileId = 79,
@@ -186,7 +337,7 @@ namespace Tiled.NET.Test
                     RotatedHex120 = false,
                 }
             };
-            expected[0, 1] = new TiledTile
+            expected.Layers[0].Tiles[0, 1] = new TiledTile
             {
                 TileSetId = 248,
                 LocalTileId = 79,
@@ -205,7 +356,7 @@ namespace Tiled.NET.Test
                     RotatedHex120 = false,
                 }
             };
-            expected[0, 2] = new TiledTile
+            expected.Layers[0].Tiles[0, 2] = new TiledTile
             {
                 TileSetId = 248,
                 LocalTileId = 79,
@@ -224,7 +375,7 @@ namespace Tiled.NET.Test
                     RotatedHex120 = false,
                 }
             };
-            expected[0, 3] = new TiledTile
+            expected.Layers[0].Tiles[0, 3] = new TiledTile
             {
                 TileSetId = 248,
                 LocalTileId = 3,
@@ -244,15 +395,11 @@ namespace Tiled.NET.Test
                 }
             };
 
-            var result = tiledTilemap.GetTilesForLayer(layer, tilesets);
+            // ACT
+            var result = new TiledTilemap(mockFileSystem, tiledTilemapJsonServiceMock.Object, mockTilemapFilepath);
 
-            for (int y = 0; y < layer.TileCountY; y++)
-            {
-                for (int x = 0; x < layer.TileCountX; x++)
-                {
-                    AreEqualByJson(expected[y, x], result[y, x]);
-                }
-            }
+            // ASSERT
+            AreEqualByJson(expected, result);
         }
 
 
