@@ -28,7 +28,8 @@
     - [Swept AABB Collision Detection](#swept-aabb-collision-detection)
 - [3rd Party Tools](#3rd-party-tools)
   - [Aseprite](#aseprite)
-    - [Setting up animations](#setting-up-animations)
+    - [Layers](#layers)
+    - [User Data](#user-data)
     - [Exporting sprite sheets](#exporting-sprite-sheets)
   - [Tiled](#tiled)
     - [Setting up your tileset](#setting-up-your-tileset)
@@ -232,45 +233,80 @@ A normal is the direction that an edge of an object is facing. Think of a perpen
 
 # 3rd Party Tools
 ## Aseprite
+In order for your Aseprite spritesheets to work with the Aseprite.NET library you need to configure your spritesheets as described below
 
-In order for your Aseprite sprite animations to work with `AnimationFrameConverter` you need to put your animations on seperate layers with the name of the layers corresponding to the `AnimationType`. 
+### Layers
+Put your animations on seperate layers with the name of the layers corresponding to the different animations in your spritesheet eg for a walk animation name your layer "Walk".
+You can also specify whether an animation should loop by adding a comma followed by the word "loop" after the layer name, eg: "Walk,loop" 
 
-### Setting up animations
-For a 64x64px sprite set the Canvas Size and Sprite Size to 64x64px.  
+### User Data
+You can also include user data in your spritesheet, for example you might want to specify that a frame within an Attack animation is a frame that when active in your game inflicts damage (eg the frame shows a a knight with his sword extended) so you could add the string "isattacking" to the User Data.
+To add user data right click on a frame cell and select Cel Properties and enter a string in the User Data text field.
+This will then be added to the outputted json file in meta.layers.
 
 ### Exporting sprite sheets
 In Export Sprite Sheet on the Layout tab make sure that Sheet Type is is set to "By Rows", on the Sprite tab make sure Split Layers is selected, and on the Borders tab make sure Border Padding and Inner Padding is set to 0 and Spacing is set to 1, this will add a 1px border around each sprite in the exported sprite sheet image. 
-Then make sure you name your layers to correspond with the animation eg "Walk", then in the Export Sprite Sheet Json Data Item Filename text box make sure you have the "layer" and "frame" values in the format of: {layer},{frame} which will give you an output that will specify for each frame the animation name (layer name) and frame number in the filename property
+
+Then on the Output tab make sure Output File and JSON Data are ticked and that Array is selected from the dropdown and that on that Layers is ticked next to Meta. In the Item Filename textbox make sure you have the "layer" and "frame" values in the format of: {layer}|{frame} this will give you an output that will specify for each frame the layer name and frame number in the frame filename property.
+
 \
 If all of the above was configured correctly you should have 2 files exported: a sprite sheet image with each sprite animation on a seperate row and a .json file that specifies the size and x,y coordinates of each frame within the image, something like this:
 
 example_spritesheet_.json
 ```
 { "frames": [
-	{
-		"filename": "Ready,0",
-		"frame": { "x": 0, "y": 0, "w": 64, "h": 64 },
-		"rotated": false,
-		"trimmed": false,
-		"spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
-		"sourceSize": { "w": 64, "h": 64 },
-		"duration": 100
-	},
-	{
-		"filename": "Ready,1",
-		"frame": { "x": 65, "y": 0, "w": 64, "h": 64 },
-		"rotated": false,
-		"trimmed": false,
-		"spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
-		"sourceSize": { "w": 64, "h": 64 },
-		"duration": 100
-	}
-   ]
+    {
+      "filename": "Walk,loop|0",
+      "frame": { "x": 0, "y": 0, "w": 64, "h": 64 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+      "sourceSize": { "w": 64, "h": 64 },
+      "duration": 100
+    },
+    {
+      "filename": "Walk,loop|1",
+      "frame": { "x": 65, "y": 0, "w": 64, "h": 64 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+      "sourceSize": { "w": 64, "h": 64 },
+      "duration": 100
+    },
+    {
+      "filename": "Attack|0",
+      "frame": { "x": 0, "y": 65, "w": 64, "h": 64 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+      "sourceSize": { "w": 64, "h": 64 },
+      "duration": 100
+    },
+    {
+      "filename": "Attack|1",
+      "frame": { "x": 65, "y": 65, "w": 64, "h": 64 },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+      "sourceSize": { "w": 64, "h": 64 },
+      "duration": 100
+    }
+    ...
+  ],
+  "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.7-x64",
+  "image": "Spriteheet1.png",
+  "format": "RGBA8888",
+  "size": { "w": 389, "h": 129 },
+  "scale": "1",
+  "layers": [
+   { "name": "Ready,loop", "opacity": 255, "blendMode": "normal" },
+   { "name": "Attack", "opacity": 255, "blendMode": "normal", "cels": [{ "frame": 3, "data": "isattacking" }] }
+  ]
+ }
 }
 ```
-
-\
-This can then be consumed by the `AnimationFrameConverter` which extracts the splits the `AnimationType` and `FrameNumber` from the filename value.
 
 
 ## Tiled
