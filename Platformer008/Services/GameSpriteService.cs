@@ -10,18 +10,16 @@ namespace Platformer008.Services
 {
     public interface IGameSpriteService
     {
-        GameSprite MapAsepriteSpriteToGameSprite(AsepriteSprite asepriteSprite, Texture2D spritesheetTexture);
+        GameSprite MapAsepriteSpritesheetToGameSprite(AsepriteSpritesheet asepriteSpritesheet, Texture2D spritesheetTexture);
     }
 
     public class GameSpriteService : IGameSpriteService
     {
-        public GameSprite MapAsepriteSpriteToGameSprite(AsepriteSprite asepriteSprite, Texture2D spritesheetTexture)
+        public GameSprite MapAsepriteSpritesheetToGameSprite(AsepriteSpritesheet asepriteSpritesheet, Texture2D spritesheetTexture)
         {
-            var animations = MapAsepriteAnimationsToGameAnimations(asepriteSprite.Animations, spritesheetTexture);
+            var animations = MapAsepriteAnimationsToGameAnimations(asepriteSpritesheet.Animations, spritesheetTexture);
 
-            var gameSprite = new GameSprite(asepriteSprite.SpritesheetImageName, spritesheetTexture, animations);
-
-            return gameSprite;
+            return new GameSprite(asepriteSpritesheet.SpritesheetImageName, spritesheetTexture, animations);
         }
 
         private IDictionary<GameAnimationType, GameAnimation> MapAsepriteAnimationsToGameAnimations(IEnumerable<AsepriteAnimation> asepriteAnimations, Texture2D spritesheetTexture)

@@ -1,58 +1,43 @@
-﻿using System;
+﻿using Aseprite.NET.Converters;
+using Aseprite.NET.DTOs;
+using Aseprite.NET.Models;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.IO.Abstractions;
-using Aseprite.NET.DTOs;
-using System.Globalization;
+using System.Linq;
 
-namespace Aseprite.NET.Models
+namespace Aseprite.NET
 {
-    /// <summary>
-    /// Represents an Aseprite spritesheet including layers
-    /// </summary>
-    public class AsepriteSprite
+    public interface IAsepriteSpritesheetService
+    {
+        AsepriteSpritesheet GetAsepriteSpritesheet(string spritesheetJsonFilePath);
+    }
+
+    public class AsepriteSpritesheetService : IAsepriteSpritesheetService
     {
         private IFileSystem _fileSystem;
-        private IAsepriteSpritesheetJsonService _asepriteSpritesheetJsonService;
+        private IAsepriteSpritesheetJsonConverterService _asepriteSpritesheetJsonConverterService;
 
-        /// <summary>
-        /// The spritesheet image filename minus the file extension
-        /// </summary>
-        public string SpritesheetImageName { get; private set; }
-
-        /// <summary>
-        /// The spritesheet image filename including the file extension
-        /// </summary>
-        public string SpritesheetImageFileName { get; private set; }
-
-        public IEnumerable<AsepriteAnimation> Animations { get; private set; }
-
-        public AsepriteSprite(IFileSystem fileSystem,
-            IAsepriteSpritesheetJsonService asepriteSpritesheetJsonService,
-            string spritesheetJsonFilePath)
+        public AsepriteSpritesheetService(IFileSystem fileSystem, 
+            IAsepriteSpritesheetJsonConverterService asepriteSpritesheetJsonConverterService)
         {
             _fileSystem = fileSystem;
-            _asepriteSpritesheetJsonService = asepriteSpritesheetJsonService;
-            InitializeSpritesheet(spritesheetJsonFilePath);
+            _asepriteSpritesheetJsonConverterService = asepriteSpritesheetJsonConverterService;
         }
 
-        private void InitializeSpritesheet(string spritesheetJsonFilePath)
+        public AsepriteSpritesheet GetAsepriteSpritesheet(string spritesheetJsonFilePath)
         {
             // Construct spritesheet steps
             // - Get SpritesheetDTO from .json file
             // - Convert dto to model
             // - Get animations
             //      - Group frames by animation name
-            //      - 
+            //      
 
             if (!_fileSystem.File.Exists(spritesheetJsonFilePath))
                 throw new FileNotFoundException($"{spritesheetJsonFilePath} not found");
 
-            var spritesheetDTO = _asepriteSpritesheetJsonService.GetSpritesheetDTOFromJsonFile(_fileSystem.File.ReadAllText(spritesheetJsonFilePath));
-
-            SpritesheetImageFileName = spritesheetDTO.ImageName;
-            SpritesheetImageName = _fileSystem.Path.GetFileNameWithoutExtension(spritesheetDTO.ImageName);
+            var spritesheetDTO = _asepriteSpritesheetJsonConverterService.MapSpritesheetJsonFileToSpritesheetDTO(_fileSystem.File.ReadAllText(spritesheetJsonFilePath));
 
             var animations = spritesheetDTO.FrameDTOs
             .GroupBy(x => GetAnimationNameFromFilename(x.Filename))
@@ -76,8 +61,12 @@ namespace Aseprite.NET.Models
                     FrameData = GetFrameDataFromLayers(spritesheetDTO.LayerDTOs, g.Key, GetFrameNumberFromFilename(frame.Filename))
                 })
             });
-            Animations = animations;
 
+            var asepriteSpritesheet = new AsepriteSpritesheet(spritesheetDTO.ImageName, 
+                _fileSystem.Path.GetFileNameWithoutExtension(spritesheetDTO.ImageName),
+                animations);
+
+            return asepriteSpritesheet;
         }
 
         private string GetAnimationNameFromFilename(string filename)
@@ -116,7 +105,7 @@ namespace Aseprite.NET.Models
 
             if (filenameParts.Length == 2)
             {
-                Int32.TryParse(filenameParts[1], out int frameNumber);
+                int.TryParse(filenameParts[1], out int frameNumber);
                 return frameNumber;
             }
             else
@@ -130,8 +119,8 @@ namespace Aseprite.NET.Models
 
             if (!layersWithCelData.Any())
                 return null;
-          
-            return layersWithCelData.FirstOrDefault().CelDTOs.FirstOrDefault().Data;                       
+
+            return layersWithCelData.FirstOrDefault().CelDTOs.FirstOrDefault().Data;
         }
 
         private string GetLayerName(string fileName)
@@ -140,7 +129,5 @@ namespace Aseprite.NET.Models
 
             return filenameParts[0];
         }
-
     }
-
 }

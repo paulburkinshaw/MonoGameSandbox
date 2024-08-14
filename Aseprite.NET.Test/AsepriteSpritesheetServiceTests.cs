@@ -1,13 +1,13 @@
+using Aseprite.NET.Converters;
 using Aseprite.NET.DTOs;
 using Aseprite.NET.Models;
 using Moq;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.IO.Abstractions.TestingHelpers;
 
 namespace Aseprite.NET.Test
 {
-    public class AsepriteSpritesheetTests
+    public class AsepriteSpritesheetServiceTests
     {
 
 
@@ -19,7 +19,7 @@ namespace Aseprite.NET.Test
 
 
         [Test]
-        public void Constructor_ReturnsCorrectAsepriteSpritesheet()
+        public void GetAsepriteSpritesheet_ReturnsCorrectAsepriteSpritesheet()
         {
             // Arrange         
             var mockSpritesheetJsonString = "mockSpritesheetJsonString";
@@ -31,7 +31,7 @@ namespace Aseprite.NET.Test
 
             var mockSpritesheetJsonFilePath = @"\Content\Spritesheets\Spritesheet1.json";
 
-            var asepriteSpritesheetJsonServiceMock = new Mock<IAsepriteSpritesheetJsonService>();
+            var asepriteSpritesheetJsonConverterServiceMock = new Mock<IAsepriteSpritesheetJsonConverterService>();
 
             var spritesheetDTO = new SpritesheetDTO
             {
@@ -109,8 +109,8 @@ namespace Aseprite.NET.Test
                 }
             };
 
-            asepriteSpritesheetJsonServiceMock
-                .Setup(x => x.GetSpritesheetDTOFromJsonFile(It.Is<string>(spritesheetJsonString => spritesheetJsonString == mockSpritesheetJsonString)))
+            asepriteSpritesheetJsonConverterServiceMock
+                .Setup(x => x.MapSpritesheetJsonFileToSpritesheetDTO(It.Is<string>(spritesheetJsonString => spritesheetJsonString == mockSpritesheetJsonString)))
                 .Returns(spritesheetDTO);
 
             var expected = new
@@ -199,7 +199,9 @@ namespace Aseprite.NET.Test
             };
 
             // ACT
-            var result = new AsepriteSprite(mockFileSystem, asepriteSpritesheetJsonServiceMock.Object, mockSpritesheetJsonFilePath);
+            var aepriteSpritesheetService = new AsepriteSpritesheetService(mockFileSystem, asepriteSpritesheetJsonConverterServiceMock.Object);
+
+            var result = aepriteSpritesheetService.GetAsepriteSpritesheet(mockSpritesheetJsonFilePath);
 
             // ASSERT
             AreEqualByJson(expected, result);

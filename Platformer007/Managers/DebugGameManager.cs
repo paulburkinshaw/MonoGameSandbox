@@ -78,7 +78,7 @@ public class DebugGameManager
         var screen1TilemapFilepath = @"Content\Tilemaps\Platformer_Screen1_Tilemap.tmj";
         //_tileMap = new Tilemap(screen1TilemapFilepath);
 
-        _tileMap = new Tilemap(Globals.FileSystem, Globals.TiledTilemapJsonService, screen1TilemapFilepath);
+        //_tileMap = new Tilemap(Globals.FileSystem, Globals.TiledTilemapJsonConverterService, screen1TilemapFilepath);
 
         _player1 = GetPlayer1();
         _player2 = GetPlayer2();

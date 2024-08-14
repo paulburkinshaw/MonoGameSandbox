@@ -1,12 +1,11 @@
+using Aseprite.NET.Converters;
 using Aseprite.NET.DTOs;
-using Moq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.IO.Abstractions.TestingHelpers;
 
 namespace Aseprite.NET.Test
 {
-    public class SpritesheetJsonConverterTests
+    public class AsepriteSpritesheetJsonConverterTests
     {
 
 

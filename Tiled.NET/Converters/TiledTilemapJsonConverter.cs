@@ -3,10 +3,39 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Tiled.NET.DTOs;
+
+/* Unmerged change from project 'Tiled.NET (net8.0)'
+Before:
+using System.Linq;
+After:
+using System.Linq;
+using Tiled;
+using Tiled.NET;
+using Tiled.NET.Converters;
+*/
 using System.Linq;
 
-namespace Tiled.NET
+namespace Tiled.NET.Converters
 {
+    public interface ITiledTilemapJsonConverterService
+    {
+        TilemapDTO GetTilemapDTOFromJsonFile(string tilemapJsonString);
+    }
+
+    public class TiledTilemapJsonConverterService : ITiledTilemapJsonConverterService
+    {
+        public TilemapDTO GetTilemapDTOFromJsonFile(string tilemapJsonString)
+        {
+            var tilemapDTO = JsonConvert.DeserializeObject<TilemapDTO>(
+            tilemapJsonString,
+            new JsonSerializerSettings
+            {
+                Converters = new List<JsonConverter> { new TiledTilemapJsonConverter() }
+            });
+
+            return tilemapDTO;
+        }
+    }
     public class TiledTilemapJsonConverter : JsonConverter<TilemapDTO>
     {
         public override TilemapDTO ReadJson(JsonReader reader,
@@ -32,6 +61,6 @@ namespace Tiled.NET
         public override void WriteJson(JsonWriter writer, TilemapDTO value, JsonSerializer serializer)
         {
             throw new NotImplementedException("Writing JSON is not implemented for SpritesheetDataConverter");
-        }     
+        }
     }
 }

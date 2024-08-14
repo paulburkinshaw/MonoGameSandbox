@@ -2,6 +2,32 @@
 
 namespace Aseprite.NET.Models
 {
+    /// <summary>
+    /// Represents an Aseprite spritesheet
+    /// </summary>
+    public class AsepriteSpritesheet
+    {
+        /// <summary>
+        /// The spritesheet image filename minus the file extension
+        /// </summary>
+        public string SpritesheetImageName { get; private set; }
+
+        /// <summary>
+        /// The spritesheet image filename including the file extension
+        /// </summary>
+        public string SpritesheetImageFileName { get; private set; }
+
+        public IEnumerable<AsepriteAnimation> Animations { get; private set; }
+
+        public AsepriteSpritesheet(string spritesheetImageFileName,
+            string spritesheetImageName,
+            IEnumerable<AsepriteAnimation> animations)
+        {
+            SpritesheetImageFileName = spritesheetImageFileName;
+            SpritesheetImageName = spritesheetImageName;
+            Animations = animations;
+        }
+    }
 
     public class AsepriteAnimation
     {
@@ -29,7 +55,6 @@ namespace Aseprite.NET.Models
 
         public string FrameData { get; set; }
     }
-
 
     public class SourceRectangle
     {

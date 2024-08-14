@@ -2,12 +2,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.IO;
 using Platformer008.Controls;
 using System.Collections.Generic;
-using Tiled.NET;
-using Aseprite.NET.Models;
-using System.Linq;
 using Platformer008.Entities;
 
 namespace Platformer008.Managers;
@@ -16,9 +12,10 @@ public class DebugGameManager
 {
     private Player _player1;
     private Player _player2;
-    private Tilemap _tileMap;
+    private GameTilemap _screen1TileMap;
     private bool _playerHit = false;
-    SpriteFont _font = Globals.Content.Load<SpriteFont>("Font");
+    private SpriteFont _font = Globals.Content.Load<SpriteFont>("Font");
+   
     private RenderTarget2D _collisionRenderTarget = new RenderTarget2D(Globals.GraphicsDevice, Globals.InternalSize.Width, Globals.InternalSize.Height);
     CollisionData _collisionData = new()
     {
@@ -78,8 +75,10 @@ public class DebugGameManager
         // TODO: each screen's tilemap could be in a config file of its own
         // screenNumber: Screen1, tilemap: Tilemaps\Platformer_Screen1_Tilemap.tmj
         var screen1TilemapFilepath = @"Content\Tilemaps\Platformer_Screen1_Tilemap.tmj";
-       
-        _tileMap = new Tilemap(Globals.FileSystem, Globals.TiledTilemapJsonService, screen1TilemapFilepath);
+
+        var screen1TiledTilemap = Globals.TiledTilemapService.GetTiledTilemap(screen1TilemapFilepath);
+
+        _screen1TileMap = Globals.GameTilemapService.MapTiledTilemapToGameTilemap(screen1TiledTilemap);
 
         _player1 = GetPlayer1();
         _player2 = GetPlayer2();
@@ -90,13 +89,11 @@ public class DebugGameManager
         var startPosition = new Vector2(0, 0);
         var size = new Rectangle(0, 0, 64, 64);
 
-        var player1AsepriteSprite = new AsepriteSprite(Globals.FileSystem, 
-            Globals.AsepriteSpritesheetJsonService,
-            spritesheetJsonFilePath: @"Content\Spritesheets\knight_spritesheet.json");
+        var player1AsepriteSpritesheet = Globals.AsepriteSpritesheetService.GetAsepriteSpritesheet(@"Content\Spritesheets\knight_spritesheet.json");
+    
+        var player1SpritesheetTexture = Globals.Content.Load<Texture2D>(@$"Spritesheets\{player1AsepriteSpritesheet.SpritesheetImageName}");
 
-        var player1SpritesheetTexture = Globals.Content.Load<Texture2D>(@$"Spritesheets\{player1AsepriteSprite.SpritesheetImageName}");
-
-        var player1GameSprite = Globals.GameSpriteService.MapAsepriteSpriteToGameSprite(player1AsepriteSprite, player1SpritesheetTexture);
+        var player1GameSprite = Globals.GameSpriteService.MapAsepriteSpritesheetToGameSprite(player1AsepriteSpritesheet, player1SpritesheetTexture);
 
         var inputManager = new InputManager(
             leftKey: Keys.A,
@@ -110,7 +107,7 @@ public class DebugGameManager
         var player1 = new Player(position: startPosition,
             size: size, 
             gameSprite: player1GameSprite,
-            tilemap: _tileMap,
+            tilemap: _screen1TileMap,
             inputManager: inputManager,
             id: "player1");
 
@@ -124,13 +121,11 @@ public class DebugGameManager
         var startPosition = new Vector2(250, 0);
         var size = new Rectangle(0, 0, 64, 64);
 
-        var player2AsepriteSprite = new AsepriteSprite(Globals.FileSystem,
-          Globals.AsepriteSpritesheetJsonService,
-          spritesheetJsonFilePath: @"Content\Spritesheets\skeleton_spritesheet.json");
+        var player2AsepriteSpritesheet = Globals.AsepriteSpritesheetService.GetAsepriteSpritesheet(@"Content\Spritesheets\skeleton_spritesheet.json");
+     
+        var player2SpritesheetTexture = Globals.Content.Load<Texture2D>(@$"Spritesheets\{player2AsepriteSpritesheet.SpritesheetImageName}");
 
-        var player2SpritesheetTexture = Globals.Content.Load<Texture2D>(@$"Spritesheets\{player2AsepriteSprite.SpritesheetImageName}");
-
-        var player2GameSprite = Globals.GameSpriteService.MapAsepriteSpriteToGameSprite(player2AsepriteSprite, player2SpritesheetTexture);
+        var player2GameSprite = Globals.GameSpriteService.MapAsepriteSpritesheetToGameSprite(player2AsepriteSpritesheet, player2SpritesheetTexture);
     
         var inputManager = new InputManager(
                leftKey: Keys.J,
@@ -144,7 +139,7 @@ public class DebugGameManager
         var player2 = new Player(position: startPosition,
         size: size,
         gameSprite: player2GameSprite,
-        tilemap: _tileMap,
+        tilemap: _screen1TileMap,
         inputManager: inputManager,
         id: "player2");
 
@@ -218,7 +213,7 @@ public class DebugGameManager
         if (_playerHit)
             Globals.SpriteBatch.Draw(_collisionRenderTarget, new Rectangle(0, 0, Globals.WindowSize.Width, Globals.WindowSize.Height), Color.White);
 
-        _tileMap.Draw();
+        _screen1TileMap.Draw();
         _player1.Draw();
         _player2.Draw();
         DrawPlayerScores();

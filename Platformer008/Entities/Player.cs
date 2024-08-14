@@ -28,7 +28,7 @@ public class Player : Actor
         Rectangle size,
         GameSprite gameSprite,
         InputManager inputManager,
-        Tilemap tilemap,
+        GameTilemap tilemap,
         string id) : base(position, size, gameSprite, tilemap, id)
     {
         _health = 100;
@@ -69,7 +69,6 @@ public class Player : Actor
         {
             _blocking = true;
         }
-
     }
 
     public void OnHit(object sender, PlayerHitEventArgs args)

@@ -11,7 +11,7 @@ namespace Platformer007;
 
 public class TileCollider
 {
-    public Rectangle CollidingTile;  
+    public Rectangle CollidingTile;
 }
 
 public class Tilemap : TiledTilemap
@@ -23,12 +23,24 @@ public class Tilemap : TiledTilemap
 
     private static TileCollider[,] _tileColliders;
 
-    public Tilemap(IFileSystem fileSystem, ITiledTilemapJsonService tiledTilemapJsonService, string filePath) : base(fileSystem, tiledTilemapJsonService, filePath)
-    {
-        InitializeTilemap();
-    }
+    //public Tilemap(IFileSystem fileSystem, 
+    //    ITiledTilemapJsonConverterService tiledTilemapJsonService, 
+    //    string filePath) : base(fileSystem, tiledTilemapJsonService, filePath)
+    //{
+    //    InitializeTilemap();
+    //}
 
-    public Tilemap(string filePath) : base(filePath)
+    //public Tilemap(string filePath) : base(filePath)
+    //{
+    //    InitializeTilemap();
+    //}
+
+    public Tilemap(int tileCountX,
+         int tileCountY,
+         int tileWidth,
+         int tileHeight,
+         IEnumerable<TiledTileset> tilesets,
+         IEnumerable<TiledLayer> layers) : base(tileCountX, tileCountY, tileWidth, tileHeight, tilesets, layers)
     {
         InitializeTilemap();
     }

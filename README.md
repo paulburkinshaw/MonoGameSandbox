@@ -26,7 +26,7 @@
     - [Collision Detection when Scaling and Rotating](#collision-detection-when-scaling-and-rotating)
     - [Using Matrices to simplify collision detection](#using-matrices-to-simplify-collision-detection)
     - [Swept AABB Collision Detection](#swept-aabb-collision-detection)
-- [3rd Party Tools](#3rd-party-tools)
+- [3rd Party Tools Integration](#3rd-party-tools-integration)
   - [Aseprite](#aseprite)
     - [Layers](#layers)
     - [User Data](#user-data)
@@ -231,7 +231,7 @@ A normal is the direction that an edge of an object is facing. Think of a perpen
 
 
 
-# 3rd Party Tools
+# 3rd Party Tools Integration
 ## Aseprite
 In order for your Aseprite spritesheets to work with the Aseprite.NET library you need to configure your spritesheets as described below
 

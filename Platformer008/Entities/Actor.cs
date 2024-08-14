@@ -33,7 +33,6 @@ public class CollidesWithSpriteEventArgs
     }
 }
 
-
 public abstract class Actor
 {
     protected Vector2 _position;
@@ -43,7 +42,7 @@ public abstract class Actor
     protected string _id;
     Vector2 _origin = Vector2.Zero;
     float _rotation = 0;
-    private Tilemap _tilemap;
+    private GameTilemap _tilemap;
 
 
     public Rectangle BoundingBox => GetBoundingBox();
@@ -55,7 +54,7 @@ public abstract class Actor
     public Actor(Vector2 position,
         Rectangle size,
         GameSprite gameSprite,
-        Tilemap tilemap,
+        GameTilemap tilemap,
         string id)
     {
         _position = position;
@@ -88,8 +87,7 @@ public abstract class Actor
 
     public virtual void OnGameAnimationComplete(object sender, GameAnimationCompleteEventArgs args)
     {
-        var test = "";
-        // _currentAnimation = null;
+          
     }
 
     public virtual void MoveX(float movementAmount, Action<CollidesWithTileEventArgs> onCollidesWithTile)
@@ -99,9 +97,9 @@ public abstract class Actor
         var newXPosition = _position.X + xAmount;
         var newXPositionBoundingBox = new Rectangle((int)newXPosition, (int)_position.Y, _size.Width, _size.Height);
 
-        var colliders = _tilemap.GetNearestColliders(newXPositionBoundingBox);
+        var tileColliders = _tilemap.GetNearestTileColliders(newXPositionBoundingBox);
 
-        if (!CollidesWithTile(colliders: colliders, newPosition: new Vector2(newXPosition, _position.Y), out Rectangle collidingTile))
+        if (!CollidesWithTile(tileColliders: tileColliders, newPosition: new Vector2(newXPosition, _position.Y), out Rectangle collidingTile))
         {
             _position.X = newXPosition;
         }
@@ -121,9 +119,9 @@ public abstract class Actor
         var newYPosition = _position.Y + yAmount;
         var newYPositionBoundingBox = new Rectangle((int)_position.X, (int)newYPosition, _size.Width, _size.Height);
 
-        var colliders = _tilemap.GetNearestColliders(newYPositionBoundingBox);
+        var tileColliders = _tilemap.GetNearestTileColliders(newYPositionBoundingBox);
 
-        if (!CollidesWithTile(colliders: colliders, newPosition: new Vector2(_position.X, newYPosition), out Rectangle collidingTile))
+        if (!CollidesWithTile(tileColliders: tileColliders, newPosition: new Vector2(_position.X, newYPosition), out Rectangle collidingTile))
         {
             _position.Y = newYPosition;
         }
@@ -136,19 +134,19 @@ public abstract class Actor
 
     }
 
-    private bool CollidesWithTile(List<TileCollider> colliders, Vector2 newPosition, out Rectangle collidingTile)
+    private bool CollidesWithTile(List<TileCollider> tileColliders, Vector2 newPosition, out Rectangle collidingTile)
     {
         if (newPosition.X != _position.X)
         {
-            foreach (var collider in colliders)
+            foreach (var tileCollider in tileColliders)
             {
-                if (collider == null)
+                if (tileCollider == null)
                     continue;
 
                 var newXPositionBoundingBox = new Rectangle((int)newPosition.X, (int)_position.Y, _size.Width, _size.Height);
-                if (newXPositionBoundingBox.Intersects(collider.CollidingTile))
+                if (newXPositionBoundingBox.Intersects(tileCollider.CollidingTile))
                 {
-                    collidingTile = collider.CollidingTile;
+                    collidingTile = tileCollider.CollidingTile;
                     return true;
                 }
             }
@@ -156,15 +154,15 @@ public abstract class Actor
 
         if (newPosition.Y != _position.Y)
         {
-            foreach (var collider in colliders)
+            foreach (var tileCollider in tileColliders)
             {
-                if (collider == null)
+                if (tileCollider == null)
                     continue;
 
                 var newYPositionBoundingBox = new Rectangle((int)_position.X, (int)newPosition.Y, _size.Width, _size.Height);
-                if (newYPositionBoundingBox.Intersects(collider.CollidingTile))
+                if (newYPositionBoundingBox.Intersects(tileCollider.CollidingTile))
                 {
-                    collidingTile = collider.CollidingTile;
+                    collidingTile = tileCollider.CollidingTile;
                     return true;
                 }
             }

@@ -1,4 +1,5 @@
 using Aseprite.NET;
+using Aseprite.NET.Converters;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -7,6 +8,7 @@ using Platformer008.Services;
 using Platformer008.Sprites;
 using System.IO.Abstractions;
 using Tiled.NET;
+using Tiled.NET.Converters;
 
 namespace Platformer008;
 
@@ -39,9 +41,13 @@ public static class Globals
     public static Color Background { get; set; }
     public static Physics Physics => new();
     public static FileSystem FileSystem = new FileSystem();
-    public static ITiledTilemapJsonService TiledTilemapJsonService = new TiledTilemapJsonService();
-    public static IAsepriteSpritesheetJsonService AsepriteSpritesheetJsonService = new AsepriteSpritesheetJsonService();
+    public static ITiledTilemapJsonConverterService TiledTilemapJsonConverterService = new TiledTilemapJsonConverterService();
+    public static IAsepriteSpritesheetJsonConverterService AsepriteSpritesheetJsonConverterService = new AsepriteSpritesheetJsonConverterService();
+    public static IAsepriteSpritesheetService AsepriteSpritesheetService = new AsepriteSpritesheetService(FileSystem, AsepriteSpritesheetJsonConverterService);
+    public static ITiledTilemapService TiledTilemapService = new TiledTilemapService(FileSystem, TiledTilemapJsonConverterService);
     public static IGameSpriteService GameSpriteService = new GameSpriteService();
+    public static IGameTilemapService GameTilemapService = new GameTilemapService();
+
     public static Color[,] GetColourDataFromTexture(Texture2D texture, Rectangle sourceRectangle)
     {
         Color[] colourData1D = new Color[sourceRectangle.Width * sourceRectangle.Height];
