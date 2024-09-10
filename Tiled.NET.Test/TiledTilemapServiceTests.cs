@@ -117,6 +117,22 @@ namespace Tiled.NET.Test
                 }
             };
 
+            _tilemapDTO.PropertyDTOs = new List<PropertyDTO>
+            {
+                new PropertyDTO
+                {
+                    Name = "Property1",
+                    Type = "bool",
+                    Value = true
+                },
+                new PropertyDTO
+                {
+                    Name = "Property2",
+                    Type = "string",
+                    Value = "Property2 Value"
+                },
+            };
+
             var tiledTilemapJsonConverterServiceMock = new Mock<ITiledTilemapJsonConverterService>();
 
             tiledTilemapJsonConverterServiceMock
@@ -164,6 +180,21 @@ namespace Tiled.NET.Test
                         ImageHeight = 200,
                         TileWidth = 16,
                         TileHeight = 16,                     
+                    }
+                },
+                Properties = new List<TiledProperty>
+                {
+                    new TiledProperty
+                    {
+                        Name = "Property1",
+                        Type = TiledPropertyType.Bool,
+                        Value = true                     
+                    },
+                    new TiledProperty
+                    {
+                        Name = "Property2",
+                        Type = TiledPropertyType.String,
+                        Value = "Property2 Value"
                     }
                 },
                 TileCountX = 10,
@@ -265,6 +296,22 @@ namespace Tiled.NET.Test
                 }
             };
 
+            _tilemapDTO.PropertyDTOs = new List<PropertyDTO>
+            {
+                new PropertyDTO
+                {
+                    Name = "Property1",
+                    Type = "bool",
+                    Value = true
+                },
+                new PropertyDTO
+                {
+                    Name = "Property2",
+                    Type = "string",
+                    Value = "Property2 Value"
+                },
+            };
+
             var tiledTilemapJsonConverterServiceMock = new Mock<ITiledTilemapJsonConverterService>();
 
             tiledTilemapJsonConverterServiceMock
@@ -312,6 +359,21 @@ namespace Tiled.NET.Test
                         ImageHeight = 200,
                         TileWidth = 16,
                         TileHeight = 16,
+                    }
+                },
+                Properties = new List<TiledProperty>
+                {
+                    new TiledProperty
+                    {
+                        Name = "Property1",
+                        Type = TiledPropertyType.Bool,
+                        Value = true
+                    },
+                    new TiledProperty
+                    {
+                        Name = "Property2",
+                        Type = TiledPropertyType.String,
+                        Value = "Property2 Value"
                     }
                 },
                 TileCountX = 10,

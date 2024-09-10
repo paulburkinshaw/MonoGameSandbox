@@ -6,6 +6,7 @@ namespace Tiled.NET.Models
     {
         public IEnumerable<TiledLayer> Layers { get; private set; }
         public IEnumerable<TiledTileset> Tilesets { get; private set; }
+        public IEnumerable<TiledProperty> Properties { get; private set; }
 
         /// <summary>
         /// The amount of horizontal tiles
@@ -32,7 +33,8 @@ namespace Tiled.NET.Models
             int tileWidth,
             int tileHeight,
             IEnumerable<TiledTileset> tilesets,
-            IEnumerable<TiledLayer> layers)
+            IEnumerable<TiledLayer> layers,
+            IEnumerable<TiledProperty> properties)
         {
             TileCountX = tileCountX;
             TileCountY = tileCountY;
@@ -40,6 +42,7 @@ namespace Tiled.NET.Models
             TileHeight = tileHeight;
             Tilesets = tilesets;
             Layers = layers;
+            Properties = properties;
         }
 
     }

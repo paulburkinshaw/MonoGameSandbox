@@ -57,10 +57,53 @@
          "width":80,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":3,
+         "name":"Object Layer 1",
+         "objects":[
+                {
+                 "height":8.36363636363637,
+                 "id":7,
+                 "name":"object1",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":7.63636363636364,
+                 "x":104.454545454545,
+                 "y":343.727272727273
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":2,
- "nextobjectid":1,
+ "nextlayerid":5,
+ "nextobjectid":8,
  "orientation":"orthogonal",
+ "properties":[
+        {
+         "name":"IsCollidable",
+         "type":"bool",
+         "value":false
+        }, 
+        {
+         "name":"MapTitle",
+         "type":"string",
+         "value":"The Forest"
+        }, 
+        {
+         "name":"Spawn",
+         "propertytype":"Vector2",
+         "type":"class",
+         "value":
+            {
+             "X":10,
+             "Y":20
+            }
+        }],
  "renderorder":"right-down",
  "tiledversion":"1.10.2",
  "tileheight":8,

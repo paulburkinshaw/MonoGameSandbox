@@ -61,7 +61,7 @@ public class GameManager
             AnimationConfig = File.ReadAllText(@"Content\skeleton_spritesheet_array.json")
         };
 
-    var animationManager = new AnimationManager();
+        var animationManager = new AnimationManager();
 
         var inputManager = new InputManager(
                    leftKey: Keys.J,
@@ -80,21 +80,21 @@ public class GameManager
         return player2;
     }
 
-public void Update()
-{
-    _player1.Update();
-    _player2.Update();
-}
+    public void Update()
+    {
+        _player1.Update();
+        _player2.Update();
+    }
 
-public void Draw()
-{
-    _player1.DrawToRenderTarget();
-    _player2.DrawToRenderTarget();
+    public void Draw()
+    {
+        _player1.DrawToRenderTarget();
+        _player2.DrawToRenderTarget();
 
-    Globals.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
-    _tileMap.Draw();
-    _player1.Draw();
-    _player2.Draw();
-    Globals.SpriteBatch.End();
-}
+        Globals.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
+        _tileMap.Draw();
+        _player1.Draw();
+        _player2.Draw();
+        Globals.SpriteBatch.End();
+    }
 }

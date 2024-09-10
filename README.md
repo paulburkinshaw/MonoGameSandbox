@@ -160,6 +160,79 @@ TODO: add info for Sprite Maps
 
 ### Pixel Collision Detection
 
+```
+public static bool SpriteTexturesCollide(Player spriteA, Player spriteB, CollisionData collisionData = null)
+{     
+    var currentFrameNumberA = spriteA.CurrentAnimation.CurrentFrameNumber;
+    var currentFrameNumberB = spriteB.CurrentAnimation.CurrentFrameNumber;
+
+    var widthA = spriteA.CurrentAnimation.Frames[currentFrameNumberA].SourceRectangle.Width;
+    var heightA = spriteA.CurrentAnimation.Frames[currentFrameNumberA].SourceRectangle.Height;
+    var widthB = spriteB.CurrentAnimation.Frames[currentFrameNumberB].SourceRectangle.Width;
+    var heightB = spriteB.CurrentAnimation.Frames[currentFrameNumberB].SourceRectangle.Height;
+
+    var matrixAtoB = spriteA.Matrix * Matrix.Invert(spriteB.Matrix);
+    var matrixBtoA = spriteB.Matrix * Matrix.Invert(spriteA.Matrix); // not currently used
+
+    for (int x1 = 0; x1 < widthA; x1++)
+    {
+        for (int y1 = 0; y1 < heightA; y1++)
+        {
+            var pixelCoordinateA = new Vector2(x1, y1);
+
+            // For each pixel of spriteA 1 we first want to find the corresponding screen coordinates, this is done by transforming spriteA's pixel coordinates with the matrix of spriteA
+            // var screenCoordinateA = Vector2.Transform(pixelCoordinateA, matrixA);
+
+            // for the screen coordinates we then want to find the corresponding pixel position in spriteB's texture, this is done by transforming the screen coordinates with the inverse of the spriteB matrix
+            // var pixelCoordinateB = Vector2.Transform(screenCoordinateA, Matrix.Invert(spriteB.Matrix));
+
+            // uncomment the above two lines and comment out the below line to use the long hand method
+
+            // A shorthand way to do this is to transform spriteAs pixel coordinates with the matrix that is the combination of both the spriteAs matrix and the inverse of spriteB's matrix
+            // transforming a pixel coordinate from spriteAs texture by this matrix will immediately give us the pixel coordinate in spriteB's texture
+            var pixelCoordinateB = Vector2.Transform(pixelCoordinateA, matrixAtoB);
+
+            int x2 = (int)pixelCoordinateB.X;
+            int y2 = (int)pixelCoordinateB.Y;
+            if (x2 >= 0 && x2 < widthB)
+            {
+                if (y2 >= 0 && y2 < heightB)
+                {
+                    var colourData1 = spriteA.CurrentAnimation.ColourData[new(spriteA.CurrentAnimation.AnimationType, currentFrameNumberA)];
+                    var colourData2 = spriteB.CurrentAnimation.ColourData[new(spriteB.CurrentAnimation.AnimationType, currentFrameNumberB)];
+
+                    if (colourData1[x1, y1].A > 0)
+                    {
+                        if (colourData2[x2, y2].A > 0)
+                        {
+                            if (collisionData != null)
+                            {
+                                collisionData.PixelCoordinatesA = pixelCoordinateA;
+                                collisionData.PixelCoordinatesB = pixelCoordinateB;       
+                                collisionData.CurrentFrameA = spriteA.CurrentAnimation.Frames[currentFrameNumberA];
+                                collisionData.CurrentFrameB = spriteB.CurrentAnimation.Frames[currentFrameNumberB];
+                                collisionData.ScreenCoordinates = Vector2.Transform(pixelCoordinateA, spriteA.Matrix);
+                            }
+                                             
+                            return true;
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+    if (collisionData != null)
+    {
+        collisionData.PixelCoordinatesA = Vector2.Zero;
+        collisionData.PixelCoordinatesB = Vector2.Zero;
+        collisionData.ScreenCoordinates = Vector2.Zero;
+    }
+    return false;
+}
+```
+
 <hr/>
 
 ### Collision Detection when Scaling and Rotating

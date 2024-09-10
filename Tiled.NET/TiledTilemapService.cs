@@ -66,12 +66,15 @@ namespace Tiled.NET
             // Map LayerDTO to TiledLayer 
             var layers = MapLayerDTOsToTiledLayers(tilemapDTO.LayerDTOs, tilesets.ToList());
 
+            var properties = MapPropertyDTOsToTiledProperties(tilemapDTO.PropertyDTOs);
+
             return new TiledTilemap(tileCountX: tilemapDTO.Width,
                                                 tileCountY: tilemapDTO.Height,
                                                 tileWidth: tilemapDTO.TileWidth,
                                                 tileHeight: tilemapDTO.TileHeight,
                                                 tilesets: tilesets,
-                                                layers: layers);
+                                                layers: layers,
+                                                properties: properties);
 
         }
 
@@ -106,6 +109,25 @@ namespace Tiled.NET
             }
 
             return tiledLayers;
+        }
+
+        private IEnumerable<TiledProperty> MapPropertyDTOsToTiledProperties(IEnumerable<PropertyDTO> propertyDTOs)
+        {
+            var tiledProperties = new List<TiledProperty>();
+
+            foreach (var propertyDTO in propertyDTOs)
+            {
+                var tiledProperty = new TiledProperty
+                {
+                   Name = propertyDTO.Name,
+                   Type = GetTiledPropertyType(propertyDTO.Type),
+                   Value = propertyDTO.Value
+                };
+
+                tiledProperties.Add(tiledProperty);
+            }
+
+            return tiledProperties;
         }
 
         /// <summary>
@@ -223,6 +245,18 @@ namespace Tiled.NET
             var tileset = tilesets.Where(x => x.FirstGID == firstGIDs.Max()).FirstOrDefault();
 
             return tileset;
+        }
+
+        private TiledPropertyType GetTiledPropertyType(string type)
+        {
+            if (Enum.TryParse(type, true, out TiledPropertyType tiledPropertyType))
+            {
+                return tiledPropertyType;
+            }
+            else
+            {
+                throw new ArgumentException($"Unknown TiledPropertyType: {tiledPropertyType}");
+            }
         }
     }
 }

@@ -12,6 +12,9 @@ namespace Tiled.NET.DTOs
 
         public List<TilesetDTO> TilesetDTOs { get; set; }
 
+        [JsonProperty("properties")]
+        public List<PropertyDTO> PropertyDTOs { get; set; }
+
         /// <summary>
         /// Total horizontal tiles
         /// </summary>
@@ -69,5 +72,14 @@ namespace Tiled.NET.DTOs
         public int TileHeight { get; set; }
         public int TileCount { get; set; }
         public int Columns { get; set; }
+    }
+
+    public class PropertyDTO
+    {
+        public string Name;
+
+        public string Type;
+
+        public object Value;
     }
 }

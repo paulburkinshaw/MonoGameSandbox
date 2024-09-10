@@ -58,6 +58,14 @@ public static class Globals
         {
             for (int y = 0; y < sourceRectangle.Height; y++)
             {
+                // Get colour data from 1d array:
+                // x + (y * sourceRectangle.Width) calculates the column offset needed to move down a row to get the array index for the pixel colour value of the next row in the texture
+                // by skipping a fixed number of elements in the array
+                // so if we start at 0,0 in the texture 0 + (0 * 64) = 0 so we get the array index 0 which has the pixel colour of 0,0 stored at index 0 in the array 
+                // if we move to at 0,1 in the texture 0 + (1 * 64) = 64 so we get the the pixel colour of the texture at 0,1 stored at index 64 in the array - one row down
+                // if we move to at 0,2 in the texture 0 + (2 * 64) = 64 so we get the the pixel colour of the texture at 0,2 stored at index 128 in the array 
+                // Load colour data into 2d array:
+                // we then load the colour data into a 2d array using the x and y values making it easier to retrieve the colour data later
                 var arrayIndexOffset = x + (y * sourceRectangle.Width);
                 colourData2D[x, y] = colourData1D[arrayIndexOffset];
             }
@@ -76,13 +84,24 @@ public static class Globals
         var heightB = spriteB.CurrentAnimation.Frames[currentFrameNumberB].SourceRectangle.Height;
 
         var matrixAtoB = spriteA.Matrix * Matrix.Invert(spriteB.Matrix);
-        var matrixBtoA = spriteB.Matrix * Matrix.Invert(spriteA.Matrix);
+        var matrixBtoA = spriteB.Matrix * Matrix.Invert(spriteA.Matrix); // not currently used
 
         for (int x1 = 0; x1 < widthA; x1++)
         {
             for (int y1 = 0; y1 < heightA; y1++)
             {
                 var pixelCoordinateA = new Vector2(x1, y1);
+
+                // For each pixel of spriteA 1 we first want to find the corresponding screen coordinates, this is done by transforming spriteA's pixel coordinates with the matrix of spriteA
+                // var screenCoordinateA = Vector2.Transform(pixelCoordinateA, matrixA);
+
+                // for the screen coordinates we then want to find the corresponding pixel position in spriteB's texture, this is done by transforming the screen coordinates with the inverse of the spriteB matrix
+                // var pixelCoordinateB = Vector2.Transform(screenCoordinateA, Matrix.Invert(spriteB.Matrix));
+
+                // uncomment the above two lines and comment out the below line to use the long hand method
+
+                // A shorthand way to do this is to transform spriteAs pixel coordinates with the matrix that is the combination of both the spriteAs matrix and the inverse of spriteB's matrix
+                // transforming a pixel coordinate from spriteAs texture by this matrix will immediately give us the pixel coordinate in spriteB's texture
                 var pixelCoordinateB = Vector2.Transform(pixelCoordinateA, matrixAtoB);
 
                 int x2 = (int)pixelCoordinateB.X;
@@ -91,12 +110,12 @@ public static class Globals
                 {
                     if (y2 >= 0 && y2 < heightB)
                     {
-                        var colourData1 = spriteA.CurrentAnimation.ColourData[new(spriteA.CurrentAnimation.AnimationType, currentFrameNumberA)];
-                        var colourData2 = spriteB.CurrentAnimation.ColourData[new(spriteB.CurrentAnimation.AnimationType, currentFrameNumberB)];
+                        var colourDataA = spriteA.CurrentAnimation.ColourData[new(spriteA.CurrentAnimation.AnimationType, currentFrameNumberA)];
+                        var colourDataB = spriteB.CurrentAnimation.ColourData[new(spriteB.CurrentAnimation.AnimationType, currentFrameNumberB)];
 
-                        if (colourData1[x1, y1].A > 0)
+                        if (colourDataA[x1, y1].A > 0)
                         {
-                            if (colourData2[x2, y2].A > 0)
+                            if (colourDataB[x2, y2].A > 0)
                             {
                                 if (collisionData != null)
                                 {

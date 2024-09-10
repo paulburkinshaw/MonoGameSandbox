@@ -1,12 +1,25 @@
 ﻿namespace Tiled.NET.Models
 {
-
     public enum TiledLayerType
     {
         TileLayer,
         ObjectLayer,
-        ImageLayer
+        ImageLayer,
+        GroupLayer
     }
+
+    public enum TiledPropertyType
+    {
+        String,
+        Bool,
+        Color,
+        File,
+        Float,
+        Int,
+        Object,
+        Class
+    }
+
     public class TiledLayer
     {
         public uint[] TileGIDs { get; set; }
@@ -63,6 +76,18 @@
         /// The height in pixels of the tile in the source image
         /// </summary>
         public int Height;
+    }
+
+    /// <summary>
+    /// Represents a property object in both tilesets, maps, layers and objects. Values are all in string but you can use the 'type' property for conversions
+    /// </summary>
+    public class TiledProperty
+    {
+        public string Name;
+
+        public TiledPropertyType Type;
+
+        public object Value;
     }
 
 }
