@@ -1,4 +1,6 @@
-﻿namespace Tiled.NET.Models
+﻿using System.Collections.Generic;
+
+namespace Tiled.NET.Models
 {
     public enum TiledLayerType
     {
@@ -17,15 +19,49 @@
         Float,
         Int,
         Object,
-        Class
+        CustomTypeClass,
+        CustomTypeEnumString,
+        CustomTypeEnumNumber
     }
 
+    #region layer types
+
+    /// <summary>
+    /// Base class for layer types
+    /// </summary>
     public class TiledLayer
     {
-        public uint[] TileGIDs { get; set; }
-        public TiledTile[,] Tiles { get; set; }
+        public int ID { get; set; }
+
         public string Name { get; set; }
 
+        public double Opacity { get; set; }
+
+        public double OffsetX { get; set; }
+
+        public double OffsetY { get; set; }
+
+        public double ParallaxX { get; set; }
+
+        public double ParallaxY { get; set; }
+
+        public bool RepeatX { get; set; }
+
+        public bool RepeatY { get; set; }
+
+        public string TransparentColor { get; set; }
+
+        public string TintColor { get; set; }
+
+        public TiledLayerType TiledLayerType { get; set; }
+
+        public bool Visible { get; set; }
+
+        public IEnumerable<TiledProperty> Properties { get; private set; }    
+    }
+
+    public class TileLayer : TiledLayer
+    {
         /// <summary>
         /// Total horizontal tiles
         /// </summary>
@@ -36,8 +72,27 @@
         /// </summary>
         public int TileCountY { get; set; }
 
-        public TiledLayerType TiledLayerType { get; set; }
+        public uint[] TileGIDs { get; set; }
+
+        public TiledTile[,] Tiles { get; set; }
     }
+
+    public class ImageLayer : TiledLayer
+    {
+
+    }
+
+    public class ObjectLayer : TiledLayer
+    {
+
+    }
+
+    public class GroupLayer : TiledLayer
+    {
+
+    }
+
+    #endregion layer types
 
     public class TiledTile
     {
@@ -78,9 +133,6 @@
         public int Height;
     }
 
-    /// <summary>
-    /// Represents a property object in both tilesets, maps, layers and objects. Values are all in string but you can use the 'type' property for conversions
-    /// </summary>
     public class TiledProperty
     {
         public string Name;

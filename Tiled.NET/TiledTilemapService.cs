@@ -37,7 +37,7 @@ namespace Tiled.NET
             // - Get TilemapDTO from .tmj or .tmx file
             // - Convert dto to model
             //      - Convert TilesetDTO to TiledTileset 
-            //      - Convert LayerDTO to TiledLayer  
+            //      - Convert LayerDTOs to TiledLayers
             //          - Convert TileGIDs to TiledTiles
             //
 
@@ -95,20 +95,45 @@ namespace Tiled.NET
 
             foreach (var layerDTO in layerDTOs)
             {
-                var tiledLayer = new TiledLayer
+                switch (layerDTO.Type)
                 {
-                    TileGIDs = layerDTO.TileGIDs,
-                    Name = layerDTO.Name,
-                    TileCountX = layerDTO.Width,
-                    TileCountY = layerDTO.Height
-                };
+                    case "tilelayer":
+                        var tileLayer = new TileLayer
+                        {
+                            Name = layerDTO.Name,
+                            TiledLayerType = TiledLayerType.TileLayer,
+                            TileGIDs = layerDTO.TileGIDs,
+                            TileCountX = layerDTO.Width,
+                            TileCountY = layerDTO.Height
+                        };
+                        tileLayer.Tiles = GetTilesForLayer(tileLayer, tilesets);
+                        tiledLayers.Add(tileLayer);
 
-                tiledLayer.Tiles = GetTilesForLayer(tiledLayer, tilesets);
+                        break;
+                    case "objectgroup":
+                        var objectLayer = new ObjectLayer
+                        {
+                            Name = layerDTO.Name,
+                            TiledLayerType = TiledLayerType.ObjectLayer,
+                        };
 
-                tiledLayers.Add(tiledLayer);
+                        tiledLayers.Add(objectLayer);
+
+                        break;
+                    case "imagelayer":
+
+                        break;
+                    case "group":
+
+                        break;
+                    default:
+
+                        break;
+                }
             }
 
             return tiledLayers;
+
         }
 
         private IEnumerable<TiledProperty> MapPropertyDTOsToTiledProperties(IEnumerable<PropertyDTO> propertyDTOs)
@@ -119,9 +144,9 @@ namespace Tiled.NET
             {
                 var tiledProperty = new TiledProperty
                 {
-                   Name = propertyDTO.Name,
-                   Type = GetTiledPropertyType(propertyDTO.Type),
-                   Value = propertyDTO.Value
+                    Name = propertyDTO.Name,
+                    Type = GetTiledPropertyType(propertyDTO),
+                    Value = propertyDTO.Value
                 };
 
                 tiledProperties.Add(tiledProperty);
@@ -136,7 +161,7 @@ namespace Tiled.NET
         /// <param name="layer">The layer containing the TileGIDs</param>
         /// <param name="tilesets">tileset collection</param>
         /// <returns>TiledTile[,]</returns>
-        private TiledTile[,] GetTilesForLayer(TiledLayer layer, List<TiledTileset> tilesets)
+        private TiledTile[,] GetTilesForLayer(TileLayer layer, List<TiledTileset> tilesets)
         {
             // Convert TileGIDs to TiledTiles steps
             // - For each tile index in the TileGIDs array:
@@ -247,16 +272,21 @@ namespace Tiled.NET
             return tileset;
         }
 
-        private TiledPropertyType GetTiledPropertyType(string type)
+        private TiledPropertyType GetTiledPropertyType(PropertyDTO propertyDTO)
         {
-            if (Enum.TryParse(type, true, out TiledPropertyType tiledPropertyType))
+            if (Enum.TryParse(propertyDTO.Type, true, out TiledPropertyType tiledPropertyType))
             {
-                return tiledPropertyType;
+                if (tiledPropertyType == TiledPropertyType.String && !String.IsNullOrEmpty(propertyDTO.PropertyType))                   
+                    return TiledPropertyType.CustomTypeEnumString;
+                else if (tiledPropertyType == TiledPropertyType.Int && !String.IsNullOrEmpty(propertyDTO.PropertyType))
+                    return TiledPropertyType.CustomTypeEnumNumber;
+                else
+                    return tiledPropertyType;
             }
+            else if (propertyDTO.Type == "class")
+                return TiledPropertyType.CustomTypeClass;
             else
-            {
-                throw new ArgumentException($"Unknown TiledPropertyType: {tiledPropertyType}");
-            }
+                throw new ArgumentException($"Unknown TiledPropertyType: {propertyDTO.Type}");
         }
     }
 }

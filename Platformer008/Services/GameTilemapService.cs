@@ -19,10 +19,10 @@ namespace Platformer008.Services
             //  - Map TiledTiles to GameTiles
             //  - Build tilesetTexturesDictionary from tiledTilemap.Tilesets
 
-            var tiledLayer = tiledTilemap.Layers.Where(x => x.Name == "CollidableTiles").FirstOrDefault();
-            var tiledTiles = tiledLayer.Tiles;
+            var tileLayer = tiledTilemap.Layers.Where(x => x.TiledLayerType == TiledLayerType.TileLayer).FirstOrDefault() as TileLayer;
+            var tiledTiles = tileLayer.Tiles;
 
-            GameTile[,] gameTiles = new GameTile[tiledLayer.TileCountY, tiledLayer.TileCountX];
+            GameTile[,] gameTiles = new GameTile[tileLayer.TileCountY, tileLayer.TileCountX];
 
             for (int y = 0; y < tiledTilemap.TileCountY; y++)
             {
@@ -48,7 +48,7 @@ namespace Platformer008.Services
                 }
             }
 
-            Dictionary<int, Texture2D> tilesetTexturesDictionary = new Dictionary<int, Texture2D>();
+            var tilesetTexturesDictionary = new Dictionary<int, Texture2D>();
 
             foreach (var tileset in tiledTilemap.Tilesets)
             {
